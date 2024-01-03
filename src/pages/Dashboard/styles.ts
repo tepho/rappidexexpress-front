@@ -45,8 +45,12 @@ export const ContainerDeliveries = styled.div`
   border-radius: 1rem;
 `;
 
-export const Delivery = styled.div`
-  background-color: ${(props) => props.theme['green-700']};
+interface DeliveryProps {
+  isFree: boolean
+}
+
+export const Delivery = styled.div<DeliveryProps>`
+  background-color: ${(props) => props.isFree ? props.theme['green-700'] : props.theme['gray-700']};
   padding: 1rem;
   margin: 0.5rem;
   border-radius: 10px;

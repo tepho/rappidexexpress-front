@@ -33,7 +33,7 @@ export function Dashboard() {
                     <BaseButton typeReport={assignedReport} onClick={onClickReportType}>Atribuídos</BaseButton>
             </ContainerButtons>
             <ContainerDeliveries>
-                <Delivery>
+                <Delivery isFree={isFreeReport}>
                     <ContainerShopkeeper>
                         <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
                         <ShopkeeperInfo>
@@ -74,7 +74,7 @@ export function Dashboard() {
                     </OrderActions>
                 </Delivery>
 
-                <Delivery>
+                <Delivery isFree={isFreeReport}>
                     <ContainerShopkeeper>
                         <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
                         <ShopkeeperInfo>
@@ -115,7 +115,7 @@ export function Dashboard() {
                     </OrderActions>
                 </Delivery>
 
-                <Delivery>
+                <Delivery isFree={isFreeReport}>
                     <ContainerShopkeeper>
                         <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
                         <ShopkeeperInfo>
