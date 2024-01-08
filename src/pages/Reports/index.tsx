@@ -1,6 +1,29 @@
-import { Container, DataContainer, Filter, FiltersContainer, SearchButton } from "./styles";
+import { useState } from "react";
+
+import { 
+    Container, 
+    ContainerInfo, 
+    ContainerOrder, 
+    ContainerShopkeeper, 
+    DataContainer, 
+    Delivery, 
+    Filter, 
+    FiltersContainer, 
+    ReportsContainer, 
+    SearchButton, 
+    ShopkeeperInfo, 
+    ShopkeeperProfileImage 
+} from "./styles";
 
 export function Reports() {
+    const [selectedStatus, setSelectedStatus] = useState('FINALIZADO');
+    const [selectedMotoboy, setSelectedMotoboy] = useState('FINALIZADO');
+    const [selectedEstablishment, setSelectedEstablishment] = useState('FINALIZADO');
+
+    function onClickSearch(){
+        console.log({selectedStatus, selectedMotoboy, selectedEstablishment});
+    }
+
     return (
         <Container>
             <FiltersContainer>
@@ -16,33 +39,151 @@ export function Reports() {
 
                 <Filter>
                     <p>Status:</p>
-                    <select name="select">
-                        <option value="valor1">Valor 1</option>
-                        <option value="valor2" selected>Valor 2</option>
-                        <option value="valor3">Valor 3 asdasdasd asd asd</option>
+                    <select 
+                        value={selectedStatus}
+                        onChange={e => setSelectedStatus(e.target.value)}
+                    >
+                        <option value="PENDENTE">PENDENTE</option>
+                        <option value="A CAMINHO">A CAMINHO</option>
+                        <option value="COLETADO">COLETADO</option>
+                        <option value="FINALIZADO">FINALIZADO</option>
+                        <option value="CANCELADO">CANCELADO</option>
                     </select>           
                 </Filter>
 
                 <Filter>
                     <p>Motoboy:</p>
-                    <select name="select">
-                        <option value="valor1">Valor 1</option>
-                        <option value="valor2" selected>Valor 2</option>
-                        <option value="valor3">Valor 3</option>
+                    <select 
+                        value={selectedMotoboy}
+                        onChange={e => setSelectedMotoboy(e.target.value)}
+                    >
+                        <option value="motoboy1">Valor 1</option>
+                        <option value="motoboy2">Valor 2</option>
+                        <option value="motoboy3">Valor 3</option>
                     </select>           
                 </Filter>
 
                 <Filter>
                     <p>Estabelecimento:</p>
-                    <select name="select">
-                        <option value="valor1">Valor 1</option>
-                        <option value="valor2" selected>Valor 2</option>
-                        <option value="valor3">Valor 3</option>
+                    <select 
+                        value={selectedEstablishment}
+                        onChange={e => setSelectedEstablishment(e.target.value)}
+                    >
+                        <option value="establishment1">Valor 1</option>
+                        <option value="establishment2">Valor 2</option>
+                        <option value="establishment3">Valor 3</option>
                     </select>           
                 </Filter>
 
-                <SearchButton>Buscar</SearchButton>
+                <SearchButton onClick={onClickSearch}>Buscar</SearchButton>
             </FiltersContainer>
+
+            <ReportsContainer>
+                <h2>Quantidade de entregas: 99</h2>
+                <Delivery>
+                    <ContainerShopkeeper>
+                        <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
+                        <ShopkeeperInfo>
+                            <p>Toca</p>
+                            (94) 9 9210-4406
+                        </ShopkeeperInfo>
+                    </ContainerShopkeeper>
+                    <ContainerOrder>
+                        <p>Status: Livre</p>
+                        <p>Forma de pagamento: Pix</p>
+                        <p>Valor: R$ 70,00</p>
+                        <p>Pix: </p>
+                    </ContainerOrder>
+
+                    <ContainerInfo>
+                        <p>Cliente: Matheus </p>
+                            (94) 9 9210-4406
+                    </ContainerInfo>
+
+                    <ContainerInfo>
+                        <p>Motoboy: Matheus </p>
+                        (94) 9 9210-4406
+                    </ContainerInfo>
+                </Delivery>
+
+                <Delivery>
+                    <ContainerShopkeeper>
+                        <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
+                        <ShopkeeperInfo>
+                            <p>Toca</p>
+                            (94) 9 9210-4406
+                        </ShopkeeperInfo>
+                    </ContainerShopkeeper>
+                    <ContainerOrder>
+                        <p>Status: Livre</p>
+                        <p>Forma de pagamento: Pix</p>
+                        <p>Valor: R$ 70,00</p>
+                        <p>Pix: </p>
+                    </ContainerOrder>
+
+                    <ContainerInfo>
+                        <p>Cliente: Matheus </p>
+                            (94) 9 9210-4406
+                    </ContainerInfo>
+
+                    <ContainerInfo>
+                        <p>Motoboy: Matheus </p>
+                        (94) 9 9210-4406
+                    </ContainerInfo>
+                </Delivery>
+
+                <Delivery>
+                    <ContainerShopkeeper>
+                        <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
+                        <ShopkeeperInfo>
+                            <p>Toca</p>
+                            (94) 9 9210-4406
+                        </ShopkeeperInfo>
+                    </ContainerShopkeeper>
+                    <ContainerOrder>
+                        <p>Status: Livre</p>
+                        <p>Forma de pagamento: Pix</p>
+                        <p>Valor: R$ 70,00</p>
+                        <p>Pix: </p>
+                    </ContainerOrder>
+
+                    <ContainerInfo>
+                        <p>Cliente: Matheus </p>
+                            (94) 9 9210-4406
+                    </ContainerInfo>
+
+                    <ContainerInfo>
+                        <p>Motoboy: Matheus </p>
+                        (94) 9 9210-4406
+                    </ContainerInfo>
+                </Delivery>
+
+                <Delivery>
+                    <ContainerShopkeeper>
+                        <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
+                        <ShopkeeperInfo>
+                            <p>Toca</p>
+                            (94) 9 9210-4406
+                        </ShopkeeperInfo>
+                    </ContainerShopkeeper>
+                    <ContainerOrder>
+                        <p>Status: Livre</p>
+                        <p>Forma de pagamento: Pix</p>
+                        <p>Valor: R$ 70,00</p>
+                        <p>Pix: </p>
+                    </ContainerOrder>
+
+                    <ContainerInfo>
+                        <p>Cliente: Matheus </p>
+                            (94) 9 9210-4406
+                    </ContainerInfo>
+
+                    <ContainerInfo>
+                        <p>Motoboy: Matheus </p>
+                        (94) 9 9210-4406
+                    </ContainerInfo>
+                </Delivery>
+            </ReportsContainer>
         </Container>
     )
 }

@@ -49,3 +49,38 @@ export const SearchButton = styled.div`
 
     cursor: pointer;
 `;
+
+export const ReportsContainer = styled.div`
+    background: ${(props) => props.theme['gray-700']};
+    padding: 1rem;
+    border-radius: 0.5rem;
+`;
+
+export const Delivery = styled.div`
+    background-color: ${(props) => props.theme['gray-600']};
+    padding: 1rem;
+    margin: 0.5rem;
+    border-radius: 10px;
+`;
+
+export const ContainerShopkeeper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const ShopkeeperProfileImage = styled.img`
+  height: 6rem;
+  border-radius: 100%;
+  border: solid;
+`;
+
+export const ShopkeeperInfo = styled.div``;
+
+export const ContainerOrder = styled.div`
+  margin: 1rem;
+`;
+
+export const ContainerInfo = styled.div`
+  margin: 1rem;
+`;
