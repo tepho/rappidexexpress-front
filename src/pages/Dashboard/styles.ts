@@ -22,25 +22,25 @@ interface ButtonProps {
 }
 
 export const BaseButton = styled.div<ButtonProps>`
-  background: ${(props) => props.typeReport ? props.theme['gray-500'] : props.theme['gray-800']};
+  background: ${(props) => props.typeReport ? props.theme['gray-600'] : props.theme['gray-800']};
 
   border: solid;
   padding: 1rem;
   border-radius: 1rem 1rem 0rem 0rem;
-  border-color: ${(props) => props.typeReport ? props.theme['gray-500'] : props.theme['gray-500']};
+  border-color: ${(props) => props.typeReport ? props.theme['gray-600'] : props.theme['gray-600']};
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   font-weight: bold;
-  color: ${(props) => props.typeReport ? props.theme['gray-900'] : props.theme['gray-500']};
+  color: ${(props) => props.typeReport ? props.theme['gray-300'] : props.theme['gray-500']};
 
   cursor: pointer;
 `
 
 export const ContainerDeliveries = styled.div`
-  background: ${(props) => props.theme['gray-500']};
+  background: ${(props) => props.theme['gray-600']};
   min-width: 20rem;
   border-radius: 1rem;
 `;
