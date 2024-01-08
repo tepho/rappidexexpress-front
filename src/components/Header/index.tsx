@@ -8,10 +8,10 @@ export function Header() {
     <HeaderContainer>
     <PhosphorLogo size={40} />
       <nav>
-        <NavLink to="" title="Entregas">
+        <NavLink to="/dashboard" title="Entregas">
           <Hamburger  size={24} />
         </NavLink>
-        <NavLink to="" title="Relatórios">
+        <NavLink to="/relatorios" title="Relatórios">
           <Scroll size={24} />
         </NavLink>
         <NavLink to="" title="Perfil">
