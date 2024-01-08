@@ -104,6 +104,7 @@ export const OrderButton = styled.div<OrderProps>`
   border: none;
   border-radius: 10%;
 
+  margin-top: 1rem;
   padding: 1rem;
 
   display: flex;

@@ -47,27 +47,31 @@ export function Dashboard() {
                         </ShopkeeperInfo>
                     </ContainerShopkeeper>
 
-                    <ContainerOrder>
-                        <p>Status: Livre</p>
-                        <p>Forma de pagamento: Pix</p>
-                        <p>Valor: R$ 70,00</p>
-                        <p>Pix: </p>
-                    </ContainerOrder>
+                    {!isFreeReport &&
+                    <>
+                        <ContainerOrder>
+                            <p>Status: Livre</p>
+                            <p>Forma de pagamento: Pix</p>
+                            <p>Valor: R$ 70,00</p>
+                            <p>Pix: </p>
+                        </ContainerOrder>
 
-                    <ContainerInfo>
-                        <p>Cliente: Matheus </p>
-                        <Link href="">
-                            (94) 9 9210-4406 <WhatsappLogo size={18} />
-                        </Link>
-                    </ContainerInfo>
+                        <ContainerInfo>
+                            <p>Cliente: Matheus </p>
+                            <Link href="">
+                                (94) 9 9210-4406 <WhatsappLogo size={18} />
+                            </Link>
+                        </ContainerInfo>
 
-                    <ContainerInfo>
-                        <p>Motoboy: Matheus </p>
-                        <Link href="">
-                            (94) 9 9210-4406 <WhatsappLogo size={18} />
-                        </Link>
-                    </ContainerInfo>
+                        <ContainerInfo>
+                            <p>Motoboy: Matheus </p>
+                            <Link href="">
+                                (94) 9 9210-4406 <WhatsappLogo size={18} />
+                            </Link>
+                        </ContainerInfo>
 
+                    </>
+                    }
                     <OrderActions>
                         <OrderButton typeButton={true}>Atribuir</OrderButton>
                         <OrderButton typeButton={false}>Apagar</OrderButton>
@@ -88,27 +92,31 @@ export function Dashboard() {
                         </ShopkeeperInfo>
                     </ContainerShopkeeper>
 
-                    <ContainerOrder>
-                        <p>Status: Livre</p>
-                        <p>Forma de pagamento: Pix</p>
-                        <p>Valor: R$ 70,00</p>
-                        <p>Pix: </p>
-                    </ContainerOrder>
+                    {!isFreeReport &&
+                    <>
+                        <ContainerOrder>
+                            <p>Status: Livre</p>
+                            <p>Forma de pagamento: Pix</p>
+                            <p>Valor: R$ 70,00</p>
+                            <p>Pix: </p>
+                        </ContainerOrder>
 
-                    <ContainerInfo>
-                        <p>Cliente: Matheus </p>
-                        <Link href="">
-                            (94) 9 9210-4406 <WhatsappLogo size={18} />
-                        </Link>
-                    </ContainerInfo>
+                        <ContainerInfo>
+                            <p>Cliente: Matheus </p>
+                            <Link href="">
+                                (94) 9 9210-4406 <WhatsappLogo size={18} />
+                            </Link>
+                        </ContainerInfo>
 
-                    <ContainerInfo>
-                        <p>Motoboy: Matheus </p>
-                        <Link href="">
-                            (94) 9 9210-4406 <WhatsappLogo size={18} />
-                        </Link>
-                    </ContainerInfo>
+                        <ContainerInfo>
+                            <p>Motoboy: Matheus </p>
+                            <Link href="">
+                                (94) 9 9210-4406 <WhatsappLogo size={18} />
+                            </Link>
+                        </ContainerInfo>
 
+                    </>
+                    }
                     <OrderActions>
                         <OrderButton typeButton={true}>Atribuir</OrderButton>
                         <OrderButton typeButton={false}>Apagar</OrderButton>
@@ -129,27 +137,31 @@ export function Dashboard() {
                         </ShopkeeperInfo>
                     </ContainerShopkeeper>
 
-                    <ContainerOrder>
-                        <p>Status: Livre</p>
-                        <p>Forma de pagamento: Pix</p>
-                        <p>Valor: R$ 70,00</p>
-                        <p>Pix: </p>
-                    </ContainerOrder>
+                    {!isFreeReport &&
+                    <>
+                        <ContainerOrder>
+                            <p>Status: Livre</p>
+                            <p>Forma de pagamento: Pix</p>
+                            <p>Valor: R$ 70,00</p>
+                            <p>Pix: </p>
+                        </ContainerOrder>
 
-                    <ContainerInfo>
-                        <p>Cliente: Matheus </p>
-                        <Link href="">
-                            (94) 9 9210-4406 <WhatsappLogo size={18} />
-                        </Link>
-                    </ContainerInfo>
+                        <ContainerInfo>
+                            <p>Cliente: Matheus </p>
+                            <Link href="">
+                                (94) 9 9210-4406 <WhatsappLogo size={18} />
+                            </Link>
+                        </ContainerInfo>
 
-                    <ContainerInfo>
-                        <p>Motoboy: Matheus </p>
-                        <Link href="">
-                            (94) 9 9210-4406 <WhatsappLogo size={18} />
-                        </Link>
-                    </ContainerInfo>
+                        <ContainerInfo>
+                            <p>Motoboy: Matheus </p>
+                            <Link href="">
+                                (94) 9 9210-4406 <WhatsappLogo size={18} />
+                            </Link>
+                        </ContainerInfo>
 
+                    </>
+                    }
                     <OrderActions>
                         <OrderButton typeButton={true}>Atribuir</OrderButton>
                         <OrderButton typeButton={false}>Apagar</OrderButton>
