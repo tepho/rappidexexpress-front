@@ -17,12 +17,14 @@ import {
 
 export function Reports() {
     const [selectedStatus, setSelectedStatus] = useState('FINALIZADO');
-    const [selectedMotoboy, setSelectedMotoboy] = useState('FINALIZADO');
-    const [selectedEstablishment, setSelectedEstablishment] = useState('FINALIZADO');
+    const [selectedMotoboy, setSelectedMotoboy] = useState('');
+    const [selectedEstablishment, setSelectedEstablishment] = useState('');
+    const [createdIn, setCreatedIn] = useState('');
+    const [createdUntil, setCreatedUntil] = useState('');
 
-    function onClickSearch(){
-        console.log({selectedStatus, selectedMotoboy, selectedEstablishment});
-    }
+        function onClickSearch(){
+            console.log({selectedStatus, selectedMotoboy, selectedEstablishment, createdIn, createdUntil});
+        }
 
     return (
         <Container>
@@ -31,9 +33,9 @@ export function Reports() {
                 <DataContainer>
                     <form>
                         <label htmlFor="birthday">De:</label>
-                        <input type="date" id="birthday" name="birthday" />
+                        <input type="date" value={createdIn} onChange={e => setCreatedIn(e.target.value)} />
                         <label htmlFor="birthday">até:</label>
-                        <input type="date" id="birthday" name="birthday" />
+                        <input disabled={!createdIn} type="date" min={createdIn} value={createdUntil} onChange={e => setCreatedUntil(e.target.value)} />
                     </form>
                 </DataContainer>
 
