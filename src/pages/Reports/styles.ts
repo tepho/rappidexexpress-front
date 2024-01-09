@@ -19,7 +19,9 @@ export const DataContainer = styled.div`
     input {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
-        height: 2rem;
+        height: 2.5rem;
+        background: ${(props) => props.theme['gray-600']};
+        color: ${(props) => props.theme['gray-100']};
     }
 `;
 
@@ -31,7 +33,9 @@ export const Filter = styled.div`
     
     select {
         margin-left: 1rem;
-        height: 2rem;
+        height: 2.5rem;
+        background: ${(props) => props.theme['gray-600']};
+        color: ${(props) => props.theme['gray-100']};
     }
 `;
 
