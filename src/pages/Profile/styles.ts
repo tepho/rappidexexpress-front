@@ -30,14 +30,18 @@ export const FormContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   color: ${(props) => props.theme['gray-100']};
   font-size: 1.125rem;
   font-weight: bold;
   
   gap: 2rem;
   margin-top: 3rem;
+
+  label {
+    font-size: 15px;
+    text-align: start;
+    color: ${(props) => props.theme['gray-500']};
+  }
 `
 
 export const BaseInput = styled.input`
@@ -46,15 +50,14 @@ export const BaseInput = styled.input`
   background: transparent;
   height: 2.5rem;
   border: 0;
-  /* border-bottom: 2px solid ${(props) => props.theme['gray-500']}; */
+  border-bottom: 2px solid ${(props) => props.theme['gray-500']};
   font-weight: bold;
   font-size: 1.125rem;
-  padding: 0 0.5rem;
   color: ${(props) => props.theme['gray-100']};
 
   &:focus {
     box-shadow: none;
-    border: 2px solid ${(props) => props.theme['green-500']};
+    border-bottom: 2px solid ${(props) => props.theme['green-500']};
   }
 
   &::placeholder {
