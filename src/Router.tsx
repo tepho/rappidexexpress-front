@@ -6,6 +6,7 @@ import { DefaultLayout } from './layouts/DefaultLayout'
 import { Dashboard } from './pages/Dashboard'
 import { Reports } from './pages/Reports'
 import { Profile } from './pages/Profile'
+import { NewUser } from './pages/NewUser'
 
 export function Router() {
     return (
@@ -15,6 +16,7 @@ export function Router() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/relatorios" element={<Reports />} />
           <Route path="/perfil" element={<Profile />} />
+          <Route path="/novo-usuario" element={<NewUser />} />
         </Route>
       </Routes>
     )

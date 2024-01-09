@@ -1,6 +1,6 @@
 import { HeaderContainer } from './styles'
 
-import { PhosphorLogo, Hamburger, Scroll, User, SignOut } from 'phosphor-react'
+import { PhosphorLogo, Hamburger, Scroll, User, SignOut, FilePlus } from 'phosphor-react'
 import { NavLink } from 'react-router-dom'
 
 export function Header() {
@@ -8,6 +8,9 @@ export function Header() {
     <HeaderContainer>
     <PhosphorLogo size={40} />
       <nav>
+        <NavLink to="/novo-usuario" title="Novo Usuário">
+          <FilePlus  size={24} />
+        </NavLink>
         <NavLink to="/dashboard" title="Entregas">
           <Hamburger  size={24} />
         </NavLink>
