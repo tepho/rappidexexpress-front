@@ -14,7 +14,7 @@ export function Header() {
         <NavLink to="/relatorios" title="Relatórios">
           <Scroll size={24} />
         </NavLink>
-        <NavLink to="" title="Perfil">
+        <NavLink to="/perfil" title="Perfil">
           <User  size={24} />
         </NavLink>
         <NavLink to="" title="Sair">
