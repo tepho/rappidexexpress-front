@@ -1,0 +1,91 @@
+import styled from 'styled-components'
+
+export const Container = styled.main`
+  flex: 1;
+  width: 100%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 2rem;
+  
+  background: ${(props) => props.theme['gray-600']};
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+`
+
+export const ProfileImage = styled.img`
+  height: 12rem;
+  border-radius: 100%;
+  border: solid;
+`;
+
+export const FormContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => props.theme['gray-100']};
+  font-size: 1.125rem;
+  font-weight: bold;
+  
+  gap: 2rem;
+  margin-top: 3rem;
+`
+
+export const BaseInput = styled.input`
+  flex: 1;
+  width: 17rem;
+  background: transparent;
+  height: 2.5rem;
+  border: 0;
+  /* border-bottom: 2px solid ${(props) => props.theme['gray-500']}; */
+  font-weight: bold;
+  font-size: 1.125rem;
+  padding: 0 0.5rem;
+  color: ${(props) => props.theme['gray-100']};
+
+  &:focus {
+    box-shadow: none;
+    border: 2px solid ${(props) => props.theme['green-500']};
+  }
+
+  &::placeholder {
+    color: ${(props) => props.theme['gray-500']};
+  }
+`
+
+export const ContainerButtons = styled.div`
+    width: 100%;
+`;
+
+export const BaseButton = styled.button`
+  width: 100%;
+  border: 0;
+  padding: 1rem;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+`
+
+export const SaveButton = styled(BaseButton)`
+  background: ${(props) => props.theme['green-700']};
+`;
+
+export const ChangePasswordButton = styled(BaseButton)`
+  margin-top: 1rem;
+  background: ${(props) => props.theme['yellow-500']};
+`;
