@@ -66,7 +66,7 @@ export function NewUser(){
                     <BaseInput
                         type="text"
                         id="name"
-                        placeholder="Informe o seu nome."
+                        placeholder="Informe o nome."
                         {...register('name')}
                     />
 
@@ -76,7 +76,7 @@ export function NewUser(){
                         id="phone"
                         minLength="11"
                         maxlength="11"
-                        placeholder="Informe o seu whatsapp."
+                        placeholder="Informe o whatsapp."
                         {...register('phone')}
                     />
 
@@ -100,7 +100,7 @@ export function NewUser(){
                     <BaseInput
                         type="text"
                         id="pix"
-                        placeholder="Informe o seu pix."
+                        placeholder="Informe o pix."
                         {...register('pix')}
                     />
 
@@ -108,7 +108,7 @@ export function NewUser(){
                     <BaseInput
                         type="text"
                         id="profileImage"
-                        placeholder="Informe o link da sua imagem."
+                        placeholder="Informe o link da imagem."
                         {...register('profileImage')}
                     />
 
