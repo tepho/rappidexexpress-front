@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
@@ -9,7 +10,6 @@ import {
     FormContainer,
     BaseButton
 } from "./styles";
-import { useState } from 'react';
 
 const ProfileFormValidationSchema = zod.object({
     name: zod.string().min(5, 'Informe o seu nome.'),
