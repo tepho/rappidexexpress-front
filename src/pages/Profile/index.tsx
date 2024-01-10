@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
@@ -27,6 +28,7 @@ const ProfileFormValidationSchema = zod.object({
 type ProfileFormData = zod.infer<typeof ProfileFormValidationSchema>
 
 export function Profile(){
+    const navigate = useNavigate()
     const profileFormData = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
         defaultValues: {
@@ -42,11 +44,10 @@ export function Profile(){
 
     function handleSave(data: ProfileFormData) {
         console.log(data)
-        // navigate('/dashboard')
     }
 
     function changePassword() {
-        console.log('changePass')
+        navigate('/alterar-senha')
     }
 
     const name = watch('name')
