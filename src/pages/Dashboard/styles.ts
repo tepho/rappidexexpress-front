@@ -116,3 +116,16 @@ export const OrderButton = styled.div<OrderProps>`
 
   cursor: pointer;
 `;
+
+export const SelectContainer = styled.div<DeliveryProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  select {
+    height: 2.5rem;
+    background:  ${(props) => props.theme['gray-600']};
+    color: ${(props) => props.theme['gray-100']};
+  }
+`;

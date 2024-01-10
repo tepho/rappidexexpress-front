@@ -14,12 +14,14 @@ import {
     ShopkeeperInfo, 
     ShopkeeperProfileImage, 
     OrderActions,
-    OrderButton
+    OrderButton,
+    SelectContainer
 } from "./styles";
 
 export function Dashboard() {
     const [isFreeReport, setIsFreeReport] = useState(true)
     const [assignedReport, setAssignedReport] = useState(false)
+    const [selectedMotoboy, setSelectedMotoboy] = useState('')
 
     function onClickReportType() {
         setIsFreeReport(!isFreeReport)
@@ -72,6 +74,19 @@ export function Dashboard() {
 
                     </>
                     }
+
+                    <SelectContainer>
+                        <label htmlFor="userType">Motoboy:</label>
+                        <select 
+                            value={selectedMotoboy}
+                            onChange={e => setSelectedMotoboy(e.target.value)}
+                        >
+                            <option value="shopkeeper">Lojista</option>
+                            <option value="motoboy">Motoboy</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </SelectContainer>
+
                     <OrderActions>
                         <OrderButton typebutton={true}>Atribuir</OrderButton>
                         <OrderButton typebutton={false}>Apagar</OrderButton>
@@ -117,6 +132,19 @@ export function Dashboard() {
 
                     </>
                     }
+
+                    <SelectContainer>
+                        <label htmlFor="userType">Motoboy:</label>
+                        <select 
+                            value={selectedMotoboy}
+                            onChange={e => setSelectedMotoboy(e.target.value)}
+                        >
+                            <option value="shopkeeper">Lojista</option>
+                            <option value="motoboy">Motoboy</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </SelectContainer>
+
                     <OrderActions>
                         <OrderButton typebutton={true}>Atribuir</OrderButton>
                         <OrderButton typebutton={false}>Apagar</OrderButton>
@@ -162,6 +190,19 @@ export function Dashboard() {
 
                     </>
                     }
+
+                    <SelectContainer>
+                        <label htmlFor="userType">Motoboy:</label>
+                        <select 
+                            value={selectedMotoboy}
+                            onChange={e => setSelectedMotoboy(e.target.value)}
+                        >
+                            <option value="shopkeeper">Lojista</option>
+                            <option value="motoboy">Motoboy</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </SelectContainer>
+
                     <OrderActions>
                         <OrderButton typebutton={true}>Atribuir</OrderButton>
                         <OrderButton typebutton={false}>Apagar</OrderButton>
