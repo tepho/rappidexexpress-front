@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.main`
   flex: 1;
   width: 100%;
+  min-width: 17rem;
   display: grid;
   align-items: center;
   justify-content: center;
@@ -27,15 +28,14 @@ export const ProfileImage = styled.img`
 `;
 
 export const FormContainer = styled.div`
-  width: 100%;
+  min-width: 15rem;
   display: flex;
   flex-direction: column;
   color: ${(props) => props.theme['gray-100']};
   font-size: 1.125rem;
   font-weight: bold;
   
-  gap: 2rem;
-  margin-top: 3rem;
+  gap: 1.5rem;
 
   label {
     font-size: 15px;
@@ -45,8 +45,6 @@ export const FormContainer = styled.div`
 `
 
 export const BaseInput = styled.input`
-  flex: 1;
-  width: 17rem;
   background: transparent;
   height: 2.5rem;
   border: 0;
