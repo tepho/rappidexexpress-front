@@ -7,6 +7,7 @@ import { Dashboard } from './pages/Dashboard'
 import { Reports } from './pages/Reports'
 import { Profile } from './pages/Profile'
 import { NewUser } from './pages/NewUser'
+import { ChangePassword } from './pages/ChangePassword'
 
 export function Router() {
     return (
@@ -17,6 +18,7 @@ export function Router() {
           <Route path="/relatorios" element={<Reports />} />
           <Route path="/perfil" element={<Profile />} />
           <Route path="/novo-usuario" element={<NewUser />} />
+          <Route path="/alterar-senha" element={<ChangePassword />} />
         </Route>
       </Routes>
     )
