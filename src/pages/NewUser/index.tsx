@@ -75,7 +75,7 @@ export function NewUser(){
                         type="text"
                         id="phone"
                         minLength="11"
-                        maxlength="11"
+                        maxLength="11"
                         placeholder="Informe o whatsapp."
                         {...register('phone')}
                     />

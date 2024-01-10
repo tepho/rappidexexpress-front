@@ -46,11 +46,11 @@ export const ContainerDeliveries = styled.div`
 `;
 
 interface DeliveryProps {
-  isFree: boolean
+  isfree: boolean
 }
 
 export const Delivery = styled.div<DeliveryProps>`
-  background-color: ${(props) => props.isFree ? props.theme['green-700'] : props.theme['gray-700']};
+  background-color: ${(props) => props.isfree ? props.theme['green-700'] : props.theme['gray-700']};
   padding: 1rem;
   margin: 0.5rem;
   border-radius: 10px;
@@ -95,12 +95,12 @@ export const OrderActions = styled.div`
 `;
 
 interface OrderProps {
-  typeButton: boolean
+  typebutton: boolean
 }
 
 export const OrderButton = styled.div<OrderProps>`
   /* background: ${(props) => props.theme['gray-800']}; */
-  background: ${(props) => props.typeButton ? props.theme['green-500'] : props.theme['red-700']};
+  background: ${(props) => props.typebutton ? props.theme['green-500'] : props.theme['red-700']};
   border: none;
   border-radius: 10%;
 

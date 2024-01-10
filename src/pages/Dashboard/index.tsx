@@ -33,7 +33,7 @@ export function Dashboard() {
                     <BaseButton typeReport={assignedReport} onClick={onClickReportType}>Atribuídos</BaseButton>
             </ContainerButtons>
             <ContainerDeliveries>
-                <Delivery isFree={isFreeReport}>
+                <Delivery isfree={isFreeReport}>
                     <ContainerShopkeeper>
                         <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
                         <ShopkeeperInfo>
@@ -73,12 +73,12 @@ export function Dashboard() {
                     </>
                     }
                     <OrderActions>
-                        <OrderButton typeButton={true}>Atribuir</OrderButton>
-                        <OrderButton typeButton={false}>Apagar</OrderButton>
+                        <OrderButton typebutton={true}>Atribuir</OrderButton>
+                        <OrderButton typebutton={false}>Apagar</OrderButton>
                     </OrderActions>
                 </Delivery>
 
-                <Delivery isFree={isFreeReport}>
+                <Delivery isfree={isFreeReport}>
                     <ContainerShopkeeper>
                         <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
                         <ShopkeeperInfo>
@@ -118,12 +118,12 @@ export function Dashboard() {
                     </>
                     }
                     <OrderActions>
-                        <OrderButton typeButton={true}>Atribuir</OrderButton>
-                        <OrderButton typeButton={false}>Apagar</OrderButton>
+                        <OrderButton typebutton={true}>Atribuir</OrderButton>
+                        <OrderButton typebutton={false}>Apagar</OrderButton>
                     </OrderActions>
                 </Delivery>
 
-                <Delivery isFree={isFreeReport}>
+                <Delivery isfree={isFreeReport}>
                     <ContainerShopkeeper>
                         <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
                         <ShopkeeperInfo>
@@ -163,8 +163,8 @@ export function Dashboard() {
                     </>
                     }
                     <OrderActions>
-                        <OrderButton typeButton={true}>Atribuir</OrderButton>
-                        <OrderButton typeButton={false}>Apagar</OrderButton>
+                        <OrderButton typebutton={true}>Atribuir</OrderButton>
+                        <OrderButton typebutton={false}>Apagar</OrderButton>
                     </OrderActions>
                 </Delivery>
             </ContainerDeliveries>
