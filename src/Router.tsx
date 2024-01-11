@@ -1,4 +1,7 @@
+import { useContext } from 'react'
 import { Routes, Route } from 'react-router-dom'
+
+import { DeliveryContext } from './context/DeliveryContext'
 
 import { Login } from './pages/Login'
 
@@ -10,9 +13,11 @@ import { NewUser } from './pages/NewUser'
 import { ChangePassword } from './pages/ChangePassword'
 
 export function Router() {
-    return (
-      <Routes>
-        <Route path="/" element={<Login />} />
+  const { token } = useContext(DeliveryContext)
+  return (
+    <Routes>
+      { 
+      !token ? <Route path="/" element={<Login />} /> :
         <Route path="/" element={<DefaultLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/relatorios" element={<Reports />} />
@@ -20,6 +25,8 @@ export function Router() {
           <Route path="/novo-usuario" element={<NewUser />} />
           <Route path="/alterar-senha" element={<ChangePassword />} />
         </Route>
-      </Routes>
-    )
+      }
+      
+    </Routes>
+  )
   }
