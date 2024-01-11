@@ -22,9 +22,9 @@ export function Reports() {
     const [createdIn, setCreatedIn] = useState('');
     const [createdUntil, setCreatedUntil] = useState('');
 
-        function onClickSearch(){
-            console.log({selectedStatus, selectedMotoboy, selectedEstablishment, createdIn, createdUntil});
-        }
+    function onClickSearch(){
+        console.log({selectedStatus, selectedMotoboy, selectedEstablishment, createdIn, createdUntil});
+    }
 
     return (
         <Container>
