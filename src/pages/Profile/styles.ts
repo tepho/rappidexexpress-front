@@ -21,10 +21,19 @@ export const Container = styled.main`
   }
 `
 
+export const ContainerProfileImage = styled.div`
+  height: 12rem;
+  width: 12rem;
+  border-radius: 100%;
+  border: solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const ProfileImage = styled.img`
   height: 12rem;
   border-radius: 100%;
-  border: solid;
 `;
 
 export const FormContainer = styled.div`
