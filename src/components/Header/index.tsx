@@ -6,7 +6,7 @@ import { HeaderContainer } from './styles'
 import { DeliveryContext } from '../../context/DeliveryContext'
 
 export function Header() {
-  const { logout } = useContext(DeliveryContext)
+  const { logout, permission } = useContext(DeliveryContext)
 
   function handleLogout(){
     logout()
@@ -16,9 +16,11 @@ export function Header() {
     <HeaderContainer>
     <PhosphorLogo size={40} />
       <nav>
-        <NavLink to="/novo-usuario" title="Novo Usuário">
-          <FilePlus  size={24} />
-        </NavLink>
+        {permission === 'admin' && 
+          <NavLink to="/novo-usuario" title="Novo Usuário">
+            <FilePlus  size={24} />
+          </NavLink>
+        }
         <NavLink to="/dashboard" title="Entregas">
           <Hamburger  size={24} />
         </NavLink>
