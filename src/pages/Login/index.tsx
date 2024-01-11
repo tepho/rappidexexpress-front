@@ -1,9 +1,11 @@
+import { useContext } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom';
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
 import { SignIn  } from 'phosphor-react'
 
+import { DeliveryContext } from '../../context/DeliveryContext';
 import { BaseButton, BaseInput, Container, FormContainer } from "./styles";
 
 const newLoginFormValidationSchema = zod.object({
@@ -16,6 +18,7 @@ const newLoginFormValidationSchema = zod.object({
 type NewLoginFormData = zod.infer<typeof newLoginFormValidationSchema>
 
 export function Login() {
+    const { login } = useContext(DeliveryContext)
     const navigate = useNavigate()
     const newLoginFormData = useForm<NewLoginFormData>({
         resolver: zodResolver(newLoginFormValidationSchema),
@@ -28,7 +31,7 @@ export function Login() {
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
     function handleLogin(data: NewLoginFormData) {
-        console.log(data)
+        login(data.user, data.password)
         reset()
         navigate('/dashboard')
     }
