@@ -1,7 +1,11 @@
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
+
+import { DeliveryContext } from '../../context/DeliveryContext';
+import api from '../../services/api';
 
 import { 
     BaseInput, 
@@ -28,7 +32,9 @@ const ProfileFormValidationSchema = zod.object({
 type ProfileFormData = zod.infer<typeof ProfileFormValidationSchema>
 
 export function Profile(){
+    const { token } = useContext(DeliveryContext)
     const navigate = useNavigate()
+
     const profileFormData = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
         defaultValues: {
@@ -40,7 +46,7 @@ export function Profile(){
         },
     })
 
-    const { handleSubmit, watch, register } = profileFormData
+    const { handleSubmit, watch, register, setValue } = profileFormData
 
     function handleSave(data: ProfileFormData) {
         console.log(data)
@@ -49,6 +55,24 @@ export function Profile(){
     function changePassword() {
         navigate('/alterar-senha')
     }
+
+    async function getMyData(){
+        try {
+            api.defaults.headers.Authorization = `Bearer ${token}`
+            const response = await api.get('/user/myself')
+            setValue("name", response.data.name)
+            setValue("phone", response.data.phone)
+            setValue("pix", response.data.pix)
+            setValue("profileImage", response.data.profileImage)
+            setValue("location", response.data.location)
+        } catch (error) {
+            alert(error.response.data.message)
+        }
+    }
+
+    useEffect(() => {
+        getMyData()
+    }, [])
 
     const name = watch('name')
     const phone = watch('phone')
@@ -60,7 +84,7 @@ export function Profile(){
     return (
         <Container>
             <form onSubmit={handleSubmit(handleSave)} action="">
-                <ProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg"  />
+                <ProfileImage src={profileImage}  />
 
                 <FormContainer>
                     
@@ -76,7 +100,7 @@ export function Profile(){
                     <BaseInput
                         type="text"
                         id="phone"
-                        minLength="11"
+                        minlength="11"
                         maxlength="11"
                         placeholder="Informe o seu whatsapp."
                         {...register('phone')}
