@@ -1,9 +1,17 @@
-import { HeaderContainer } from './styles'
-
-import { PhosphorLogo, Hamburger, Scroll, User, SignOut, FilePlus } from 'phosphor-react'
+import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+import { PhosphorLogo, Hamburger, Scroll, User, SignOut, FilePlus } from 'phosphor-react'
+
+import { HeaderContainer } from './styles'
+import { DeliveryContext } from '../../context/DeliveryContext'
 
 export function Header() {
+  const { logout } = useContext(DeliveryContext)
+
+  function handleLogout(){
+    logout()
+  }
+
   return (
     <HeaderContainer>
     <PhosphorLogo size={40} />
@@ -20,8 +28,8 @@ export function Header() {
         <NavLink to="/perfil" title="Perfil">
           <User  size={24} />
         </NavLink>
-        <NavLink to="" title="Sair">
-          <SignOut  size={24} />
+        <NavLink to="/" title="Sair">
+          <SignOut onClick={handleLogout} size={24} />
         </NavLink>
       </nav>
     </HeaderContainer>
