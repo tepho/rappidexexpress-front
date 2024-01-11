@@ -15,7 +15,6 @@ export function deliveryReducer(state: DeliveryState, action: any) {
             })
         case ActionTypes.LOGOUT:
             return produce(state, (draft) => {
-                console.log('teste')
                 draft.token = null
                 draft.permission = null
             })

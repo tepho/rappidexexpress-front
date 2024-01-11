@@ -56,7 +56,6 @@ export function DeliveryContextProvider({
     }
 
     function logout() {
-        console.log('logout')
         dispatch(logoutAction())
     }
 
