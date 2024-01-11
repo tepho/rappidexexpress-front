@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom';
 import * as zod from 'zod'
@@ -7,6 +7,9 @@ import { SignIn  } from 'phosphor-react'
 
 import { DeliveryContext } from '../../context/DeliveryContext';
 import { BaseButton, BaseInput, Container, FormContainer } from "./styles";
+import { Loader } from '../../components/Loader';
+
+import api from '../../services/api';
 
 const newLoginFormValidationSchema = zod.object({
     user: zod.string().min(5, 'Informe o usuario.'),
@@ -28,12 +31,27 @@ export function Login() {
         },
     })
 
+    const [loading, setLoading] = useState(false)
+
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
-    function handleLogin(data: NewLoginFormData) {
-        login(data.user, data.password)
-        reset()
-        navigate('/dashboard')
+    async function handleLogin(data: NewLoginFormData) {
+        if(loading) {
+            return
+        }
+
+        setLoading(true)
+        try {
+            const reponse = await api.post('/auth', data)
+            console.log(reponse.data)
+            login(reponse.data.token, reponse.data.permission)
+            reset()
+            navigate('/dashboard')
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            alert(error.response.data.message)
+        }
     }
 
     const user = watch('user')
@@ -60,7 +78,12 @@ export function Login() {
                 </FormContainer>
 
                 <BaseButton disabled={isSubmitDisabled} type="submit">
-                    <SignIn size={24} /> Login
+                    { !loading ?
+                        <>
+                            <SignIn size={24} /> Login 
+                        </> :
+                        <Loader size={20} biggestColor='black' smallestColor='green' />
+                    }
                 </BaseButton>
             </form>
         </Container>
