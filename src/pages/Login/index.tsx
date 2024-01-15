@@ -46,7 +46,7 @@ export function Login() {
             console.log(reponse.data)
             login(reponse.data.token, reponse.data.permission)
             reset()
-            navigate('/dashboard')
+            navigate('/')
             setLoading(false)
         } catch (error) {
             setLoading(false)
