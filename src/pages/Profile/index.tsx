@@ -14,8 +14,7 @@ import {
     ContainerButtons, 
     ContainerProfileImage, 
     FormContainer, 
-    ProfileImage, 
-    SaveButton 
+    ProfileImage,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 
@@ -35,33 +34,24 @@ type ProfileFormData = zod.infer<typeof ProfileFormValidationSchema>
 
 export function Profile(){
     const { token } = useContext(DeliveryContext)
+    api.defaults.headers.Authorization = `Bearer ${token}`
+
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(true)
-
-    const profileFormData = useForm<ProfileFormData>({
-        resolver: zodResolver(ProfileFormValidationSchema),
-        defaultValues: {
-            name: '',
-            phone: '',
-            pix: '',
-            profileImage: '',
-            location: '',
-        },
+    const [profileImage, setProfileImage] = useState('')
+    const [formValues, setFormValues] = useState({
+        name: '',
+        phone: '',
+        pix: '',
+        profileImage: '',
+        location: ''
     })
 
-    const { handleSubmit, watch, register, setValue } = profileFormData
-
-    const name = watch('name')
-    const phone = watch('phone')
-    const pix = watch('pix')
-    const profileImage = watch('profileImage')
-    const location = watch('location')
-    const isSubmitDisabled = !name || !phone || !pix || !profileImage || !location || phone.length < 11
-
-    function handleSave(data: ProfileFormData) {
-        console.log(data)
-    }
+    const { register } = useForm<ProfileFormData>({
+        resolver: zodResolver(ProfileFormValidationSchema),
+        values: formValues,
+    })
 
     function changePassword() {
         navigate('/alterar-senha')
@@ -69,14 +59,16 @@ export function Profile(){
 
     async function getMyData(){
         try {
-            api.defaults.headers.Authorization = `Bearer ${token}`
             const response = await api.get('/user/myself')
-            setValue("name", response.data.name)
-            setValue("phone", response.data.phone)
-            setValue("pix", response.data.pix)
-            setValue("profileImage", response.data.profileImage)
-            setValue("location", response.data.location)
 
+            setFormValues({
+                name: response.data.name,
+                phone: response.data.phone,
+                pix: 'response.data.phone',
+                profileImage: response.data.profileImage,
+                location: response.data.location,
+            })
+            setProfileImage(response.data.profileImage)
             setLoading(false)
         } catch (error) {
             alert(error.response.data.message)
@@ -84,14 +76,16 @@ export function Profile(){
     }
 
     useEffect(() => {
-        getMyData()
+        if(loading){
+            getMyData()
+        }
     })
 
     return (
         <Container>
             {loading ?
                 <Loader size={70} biggestColor='green' smallestColor='gray' /> :
-                <form onSubmit={handleSubmit(handleSave)} action="">
+                <form action="">
                     <ContainerProfileImage>
                         <ProfileImage src={profileImage}  />
                     </ContainerProfileImage>
@@ -103,6 +97,7 @@ export function Profile(){
                             type="text"
                             id="name"
                             placeholder="Informe o seu nome."
+                            disabled
                             {...register('name')}
                         />
 
@@ -113,6 +108,7 @@ export function Profile(){
                             minlength="11"
                             maxlength="11"
                             placeholder="Informe o seu whatsapp."
+                            disabled
                             {...register('phone')}
                         />
 
@@ -121,6 +117,7 @@ export function Profile(){
                             type="text"
                             id="pix"
                             placeholder="Informe o seu pix."
+                            disabled
                             {...register('pix')}
                         />
 
@@ -129,6 +126,7 @@ export function Profile(){
                             type="text"
                             id="profileImage"
                             placeholder="Informe o link da sua imagem."
+                            disabled
                             {...register('profileImage')}
                         />
 
@@ -137,11 +135,12 @@ export function Profile(){
                             type="text"
                             id="location"
                             placeholder="Informe o link da localização."
+                            disabled
                             {...register('location')}
                         />
 
                         <ContainerButtons>
-                            <SaveButton disabled={isSubmitDisabled} type="submit">Salvar</SaveButton>
+                            {/* <SaveButton disabled={isSubmitDisabled} type="submit">Salvar</SaveButton> */}
                             <ChangePasswordButton onClick={changePassword}>Trocar de senha</ChangePasswordButton>
                         </ContainerButtons>
                     </FormContainer>
