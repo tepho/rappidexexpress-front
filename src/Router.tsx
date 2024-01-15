@@ -19,7 +19,7 @@ export function Router() {
       { 
       !token ? <Route path="/" element={<Login />} /> :
         <Route path="/" element={<DefaultLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/relatorios" element={<Reports />} />
           <Route path="/perfil" element={<Profile />} />
           <Route path="/novo-usuario" element={<NewUser />} />

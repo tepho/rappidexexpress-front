@@ -21,7 +21,7 @@ export function Header() {
             <FilePlus  size={24} />
           </NavLink>
         }
-        <NavLink to="/dashboard" title="Entregas">
+        <NavLink to="/" title="Entregas">
           <Hamburger  size={24} />
         </NavLink>
         <NavLink to="/relatorios" title="Relatórios">
