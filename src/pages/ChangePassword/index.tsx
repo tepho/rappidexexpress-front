@@ -1,6 +1,8 @@
+import { useContext, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom';
 
 import { 
     BaseButton,
@@ -9,6 +11,9 @@ import {
     ContainerButtons,
     FormContainer
 } from "./styles";
+import { Loader } from '../../components/Loader';
+import api from '../../services/api';
+import { DeliveryContext } from '../../context/DeliveryContext';
 
 const ChangePassFormValidationSchema = zod.object({
     oldPassword: zod.string().min(4, 'Informe a senha antiga.'),
@@ -19,6 +24,12 @@ const ChangePassFormValidationSchema = zod.object({
 type ChangePassFormData = zod.infer<typeof ChangePassFormValidationSchema>
 
 export function ChangePassword() {
+    const { token } = useContext(DeliveryContext)
+    api.defaults.headers.Authorization = `Bearer ${token}`
+
+    const navigate = useNavigate()
+    
+    const [loading, setLoading] = useState(false)
     const changePasswordFormData = useForm<ChangePassFormData>({
         resolver: zodResolver(ChangePassFormValidationSchema),
         defaultValues: {
@@ -27,16 +38,31 @@ export function ChangePassword() {
         },
     })
 
-    function handleSave(data: ChangePassFormData) {
-        console.log(data)
-        // navigate('/dashboard')
-    }
 
-    const { handleSubmit, watch, register } = changePasswordFormData
+    const { handleSubmit, watch, register, reset } = changePasswordFormData
 
     const oldPassword = watch('oldPassword')
     const newPassword = watch('newPassword')
     const isSubmitDisabled = !oldPassword || !newPassword
+
+    async function handleSave(data: ChangePassFormData) {
+        console.log(data)
+        if(loading) {
+            return
+        }
+
+        setLoading(true)
+        try {
+            const reponse = await api.post('/auth/change-password', data)
+            console.log(reponse.data)
+            reset()
+            setLoading(false)
+            alert("Senha alterada com sucesso!")
+        } catch (error) {
+            setLoading(false)
+            alert(error.response.data.message)
+        }
+    }
 
     return (
         <Container>
@@ -59,7 +85,12 @@ export function ChangePassword() {
                     />
 
                     <ContainerButtons>
-                        <BaseButton disabled={isSubmitDisabled} type="submit">Salvar</BaseButton>
+                        <BaseButton disabled={isSubmitDisabled || loading} type="submit">
+                            {loading ?
+                                <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                                "Salvar"
+                            }
+                        </BaseButton>
                     </ContainerButtons>
                 </FormContainer>
             </form>
