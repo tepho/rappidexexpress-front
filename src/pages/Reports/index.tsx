@@ -9,6 +9,7 @@ import {
     Delivery, 
     Filter, 
     FiltersContainer, 
+    ProfileImageContainer, 
     ReportsContainer, 
     SearchButton, 
     ShopkeeperInfo, 
@@ -33,6 +34,16 @@ export function Reports() {
     const [selectedEstablishment, setSelectedEstablishment] = useState('');
     const [createdIn, setCreatedIn] = useState('');
     const [createdUntil, setCreatedUntil] = useState('');
+
+    function formatNumber(number: string){
+        const cleaned = ('' + number).replace(/\D/g, '');
+        const match = cleaned.match(/^(\d{2})(\d{2})(\d{4}|\d{5})(\d{4})$/);
+
+        if (match) {
+            return ['(', match[2], ')', match[3], '-', match[4]].join('')
+        }
+        return '';
+    }
 
     async function onClickSearch(){
         console.log({selectedStatus, selectedMotoboy, selectedEstablishment, createdIn, createdUntil});
@@ -140,10 +151,12 @@ export function Reports() {
                 {reports.map((report) => 
                     <Delivery key={report.id}>
                         <ContainerShopkeeper>
-                            <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
+                            <ProfileImageContainer>
+                                <ShopkeeperProfileImage src={report.establishmentImage} />
+                            </ProfileImageContainer>
                             <ShopkeeperInfo>
                                 <p>{report.establishmentName}</p>
-                                {report.establishmentPhone}
+                                {formatNumber(`+55${report.establishmentPhone}`)}
                             </ShopkeeperInfo>
                         </ContainerShopkeeper>
                         <ContainerOrder>
@@ -155,93 +168,16 @@ export function Reports() {
 
                         <ContainerInfo>
                             <p>Cliente: {report.clientName} </p>
-                                {report.clientPhone}
+                                {formatNumber(`+55${report.clientPhone}`)}
                         </ContainerInfo>
 
                         <ContainerInfo>
                             <p>Motoboy: {report.motoboyName} </p>
-                            {report.motoboyPhone}
+                            {formatNumber(`+55${report.motoboyPhone}`)}
                         </ContainerInfo>
                     </Delivery>
                 )}
 
-                {/* <Delivery>
-                    <ContainerShopkeeper>
-                        <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
-                        <ShopkeeperInfo>
-                            <p>Toca</p>
-                            (94) 9 9210-4406
-                        </ShopkeeperInfo>
-                    </ContainerShopkeeper>
-                    <ContainerOrder>
-                        <p>Status: Livre</p>
-                        <p>Forma de pagamento: Pix</p>
-                        <p>Valor: R$ 70,00</p>
-                        <p>Pix: </p>
-                    </ContainerOrder>
-
-                    <ContainerInfo>
-                        <p>Cliente: Matheus </p>
-                            (94) 9 9210-4406
-                    </ContainerInfo>
-
-                    <ContainerInfo>
-                        <p>Motoboy: Matheus </p>
-                        (94) 9 9210-4406
-                    </ContainerInfo>
-                </Delivery>
-
-                <Delivery>
-                    <ContainerShopkeeper>
-                        <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
-                        <ShopkeeperInfo>
-                            <p>Toca</p>
-                            (94) 9 9210-4406
-                        </ShopkeeperInfo>
-                    </ContainerShopkeeper>
-                    <ContainerOrder>
-                        <p>Status: Livre</p>
-                        <p>Forma de pagamento: Pix</p>
-                        <p>Valor: R$ 70,00</p>
-                        <p>Pix: </p>
-                    </ContainerOrder>
-
-                    <ContainerInfo>
-                        <p>Cliente: Matheus </p>
-                            (94) 9 9210-4406
-                    </ContainerInfo>
-
-                    <ContainerInfo>
-                        <p>Motoboy: Matheus </p>
-                        (94) 9 9210-4406
-                    </ContainerInfo>
-                </Delivery>
-
-                <Delivery>
-                    <ContainerShopkeeper>
-                        <ShopkeeperProfileImage src="https://pbs.twimg.com/profile_images/1696596355903332353/nWF46LFw_400x400.jpg" />
-                        <ShopkeeperInfo>
-                            <p>Toca</p>
-                            (94) 9 9210-4406
-                        </ShopkeeperInfo>
-                    </ContainerShopkeeper>
-                    <ContainerOrder>
-                        <p>Status: Livre</p>
-                        <p>Forma de pagamento: Pix</p>
-                        <p>Valor: R$ 70,00</p>
-                        <p>Pix: </p>
-                    </ContainerOrder>
-
-                    <ContainerInfo>
-                        <p>Cliente: Matheus </p>
-                            (94) 9 9210-4406
-                    </ContainerInfo>
-
-                    <ContainerInfo>
-                        <p>Motoboy: Matheus </p>
-                        (94) 9 9210-4406
-                    </ContainerInfo>
-                </Delivery> */}
             </ReportsContainer>
         </Container>
     )
