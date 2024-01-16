@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { PhosphorLogo, Hamburger, Scroll, User, SignOut, FilePlus } from 'phosphor-react'
+import { PhosphorLogo, Hamburger, Scroll, User, SignOut, FilePlus, UserPlus } from 'phosphor-react'
 
 import { HeaderContainer } from './styles'
 import { DeliveryContext } from '../../context/DeliveryContext'
@@ -18,6 +18,11 @@ export function Header() {
       <nav>
         {permission === 'admin' && 
           <NavLink to="/novo-usuario" title="Novo Usuário">
+            <UserPlus  size={24} />
+          </NavLink>
+        }
+        {(permission === 'admin' || permission === 'shopkeeper') && 
+          <NavLink to="/nova-entrega" title="Nova entrega">
             <FilePlus  size={24} />
           </NavLink>
         }
