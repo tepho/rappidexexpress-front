@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WhatsappLogo   } from 'phosphor-react'
+import { WhatsappLogo } from 'phosphor-react'
 
 import { 
     BaseButton, 
@@ -15,7 +15,7 @@ import {
     ShopkeeperProfileImage, 
     OrderActions,
     OrderButton,
-    SelectContainer
+    SelectContainer,
 } from "./styles";
 
 export function Dashboard() {
