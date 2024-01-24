@@ -60,11 +60,11 @@ export function Profile(){
     async function getMyData(){
         try {
             const response = await api.get('/user/myself')
-
+            console.log(response.data)
             setFormValues({
                 name: response.data.name,
                 phone: response.data.phone,
-                pix: 'response.data.phone',
+                pix: response.data.pix,
                 profileImage: response.data.profileImage,
                 location: response.data.location,
             })
