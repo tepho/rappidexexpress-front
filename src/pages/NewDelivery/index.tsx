@@ -30,6 +30,8 @@ export function NewDelivery(){
     const { token, permission } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
 
+    
+    const [loadingInitial, setLoadingInitial] = useState(true);
     const [loading, setLoading] = useState(false)
     
     const [shopkeepers, setShopkeepers] = useState([]);
@@ -87,13 +89,16 @@ export function NewDelivery(){
 
             setMotoboys(motoboysResponse.data.data)
             setShopkeepers(shopkeepersResponse.data.data)
+            setLoadingInitial(false)
         } catch (error) {
             alert(error.response.data.message)
         }
     }
 
     useEffect(() => {
-        getData()
+        if(loadingInitial) {
+            getData()
+        }
     })
 
     return (
