@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.main`
   flex: 1;
   width: 100%;
-  min-width: 17rem;
+  /* min-width: 17rem; */
   display: grid;
   align-items: center;
   justify-content: center;
@@ -64,7 +64,7 @@ export const BaseInput = styled.input`
 `
 
 export const ContainerButtons = styled.div`
-    width: 100%;
+    /* width: 100%; */
 `;
 
 export const BaseButton = styled.button`

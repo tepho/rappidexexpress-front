@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
 
+import { DeliveryContext } from '../../context/DeliveryContext';
+import api from '../../services/api';
 import { 
     BaseInput,
     Container,
@@ -10,6 +12,7 @@ import {
     FormContainer,
     BaseButton
 } from "./styles";
+import { Loader } from '../../components/Loader';
 
 const ProfileFormValidationSchema = zod.object({
     name: zod.string().min(5, 'Informe o seu nome.'),
@@ -28,6 +31,10 @@ const ProfileFormValidationSchema = zod.object({
 type ProfileFormData = zod.infer<typeof ProfileFormValidationSchema>
 
 export function NewUser(){
+    const { token } = useContext(DeliveryContext)
+    api.defaults.headers.Authorization = `Bearer ${token}`
+
+    const [loading, setLoading] = useState(false)
     const [selectedType, setSelectedType] = useState('')
     const profileFormData = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
@@ -42,9 +49,29 @@ export function NewUser(){
         },
     })
 
-    const { handleSubmit, watch, register } = profileFormData
+    const { handleSubmit, watch, register, reset } = profileFormData
 
-    function handleSave(data: ProfileFormData) {
+    async function handleSave(data: ProfileFormData) {
+        if(loading){
+            return
+        }
+
+        console.log(selectedType)
+
+        setLoading(true)
+        try {
+            await api.post('/user', {
+                ...data,
+                type: selectedType,
+                permission: selectedType === 'admin' ? selectedType : 'none',
+            })
+            reset()
+            setLoading(false)
+            alert("Novo usuário criado com sucesso!")
+        } catch (error) {
+            setLoading(false)
+            alert(error.response.data.message)
+        }
         console.log(data)
         // navigate('/dashboard')
     }
@@ -53,8 +80,8 @@ export function NewUser(){
     const phone = watch('phone')
     const pix = watch('pix')
     const profileImage = watch('profileImage')
-    const location = watch('location')
-    const isSubmitDisabled = !name || !phone || !pix || !profileImage || !location || phone.length < 11
+    // const location = watch('location')
+    const isSubmitDisabled = !name || !phone || !pix || !profileImage || phone.length < 11
 
     return (
         <Container>
@@ -125,13 +152,20 @@ export function NewUser(){
                         value={selectedType}
                         onChange={e => setSelectedType(e.target.value)}
                     >
+                        <option value="">Selecione uma opção:</option>
                         <option value="shopkeeper">Lojista</option>
                         <option value="motoboy">Motoboy</option>
                         <option value="admin">Admin</option>
                     </select>   
 
                     <ContainerButtons>
-                        <BaseButton disabled={isSubmitDisabled} type="submit">Criar novo usuário</BaseButton>
+                        <BaseButton disabled={isSubmitDisabled} type="submit">
+                            {loading ?
+                                <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                                "Criar novo usuário"
+                            }
+                        </BaseButton>
+                        
                     </ContainerButtons>
                 </FormContainer>
             </form>
