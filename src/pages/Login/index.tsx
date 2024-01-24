@@ -12,7 +12,7 @@ import { Loader } from '../../components/Loader';
 import api from '../../services/api';
 
 const newLoginFormValidationSchema = zod.object({
-    user: zod.string().min(5, 'Informe o usuario.'),
+    user: zod.string().min(3,'Informe o usuario.'),
     password: zod
       .string()
       .min(4, 'Informe a senha.'),
@@ -36,6 +36,7 @@ export function Login() {
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
     async function handleLogin(data: NewLoginFormData) {
+        console.log(data)
         if(loading) {
             return
         }
