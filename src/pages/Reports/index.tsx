@@ -97,8 +97,13 @@ export function Reports() {
                 <DataContainer>
                     <form>
                         <label htmlFor="birthday">De:</label>
-                        <input type="date" value={createdIn} onChange={e => setCreatedIn(e.target.value)} />
-                        <label htmlFor="birthday">até:</label>
+                        <input type="date" value={createdIn} onChange={e => setCreatedIn(e.target.value)} /> <br/>
+                    </form>
+                </DataContainer>
+
+                <DataContainer>
+                    <form>
+                        <label htmlFor="birthday">Até:</label>
                         <input disabled={!createdIn} type="date" min={createdIn} value={createdUntil} onChange={e => setCreatedUntil(e.target.value)} />
                     </form>
                 </DataContainer>
@@ -110,7 +115,7 @@ export function Reports() {
                         onChange={e => setSelectedStatus(e.target.value)}
                     >
                         <option value="PENDENTE">PENDENTE</option>
-                        <option value="A CAMINHO">A CAMINHO</option>
+                        <option value="ACAMINHO">A CAMINHO</option>
                         <option value="COLETADO">COLETADO</option>
                         <option value="FINALIZADO">FINALIZADO</option>
                         <option value="CANCELADO">CANCELADO</option>
