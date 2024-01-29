@@ -12,7 +12,7 @@ export enum Permissions {
 
 export enum StatusDelivery {
   PENDING = 'PENDENTE',
-  ONCOURSE = 'A CAMINHO',
+  ONCOURSE = 'ACAMINHO',
   COLLECTED = 'COLETADO',
   FINISHED = 'FINALIZADO',
   CANCELED = 'CANCELADO',
