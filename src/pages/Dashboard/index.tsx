@@ -43,6 +43,7 @@ export function Dashboard() {
     }
 
     async function getData() {
+        setLoading(true)
         try {
             const response = await api.get(`/delivery?status=PENDENTE`)
             setReports(response.data.data)
@@ -62,6 +63,16 @@ export function Dashboard() {
 
     async function handlerNextStep(report) {
         console.log(report)
+    }
+
+    async function handlerDelete(report) {
+        try {
+            await api.delete(`/delivery/${report.id}`)
+            alert('Solicitação apagada com sucesso.')
+            getData()
+        } catch (error) {
+            alert(error.response.data.message)
+        }
     }
 
     useEffect(() => {
@@ -147,7 +158,7 @@ export function Dashboard() {
                                         }
                                         {
                                             permission !== "motoboy" && report.status === "PENDENTE" &&
-                                            <OrderButton typebutton={false}>Apagar</OrderButton>
+                                            <OrderButton typebutton={false} onClick={() => handlerDelete(report)}>Apagar</OrderButton>
                                         }
                                     </OrderActions>
                                 </Delivery>
