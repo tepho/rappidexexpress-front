@@ -30,6 +30,7 @@ export function Dashboard() {
     
     const [loading, setLoading] = useState(true);
     const [reports, setReports] = useState([]);
+    const [motoboys, setMotoboys] = useState([]);
 
     const [isFreeReport, setIsFreeReport] = useState(true)
     const [assignedReport, setAssignedReport] = useState(false)
@@ -45,12 +46,22 @@ export function Dashboard() {
         try {
             const response = await api.get(`/delivery?status=PENDENTE`)
             setReports(response.data.data)
+
+            if (permission !== 'shopkeeper') {
+                const motoboysRes = await api.get('/user?type=motoboy')
+                setMotoboys(motoboysRes.data.data)
+            }
+
             setLoading(false)
             console.log(reports)
             console.log(response.data.data)
         } catch (error) {
             alert(error.response.data.message)
         }
+    }
+
+    async function handlerNextStep(report) {
+        console.log(report)
     }
 
     useEffect(() => {
@@ -113,22 +124,31 @@ export function Dashboard() {
 
                                     </>
                                     }
-
-                                    {/* permission === "admin" && <SelectContainer>
-                                        <label htmlFor="userType">Motoboy:</label>
-                                        <select 
-                                            value={selectedMotoboy}
-                                            onChange={e => setSelectedMotoboy(e.target.value)}
-                                        >
-                                            <option value="shopkeeper">Lojista</option>
-                                            <option value="motoboy">Motoboy</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    </SelectContainer> */}
-
+                                    {
+                                        permission !== "shopkeeper" && 
+                                        <SelectContainer>
+                                            <label htmlFor="motoboy">Motoboy:</label>
+                                            <select 
+                                                value={selectedMotoboy}
+                                                onChange={e => setSelectedMotoboy(e.target.value)}
+                                            >
+                                                {
+                                                    motoboys.map(motoboy => 
+                                                        <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
+                                                    )
+                                                }
+                                            </select>
+                                        </SelectContainer>
+                                    }
                                     <OrderActions>
-                                        <OrderButton typebutton={true}>Atribuir</OrderButton>
-                                        <OrderButton typebutton={false}>Apagar</OrderButton>
+                                        {
+                                            permission !== "shopkeeper" &&
+                                            <OrderButton typebutton={true} onClick={() => handlerNextStep(report)}>Atribuir</OrderButton>
+                                        }
+                                        {
+                                            permission !== "motoboy" && report.status === "PENDENTE" &&
+                                            <OrderButton typebutton={false}>Apagar</OrderButton>
+                                        }
                                     </OrderActions>
                                 </Delivery>
                             )}

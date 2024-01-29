@@ -126,7 +126,7 @@ export const OrderButton = styled.div<OrderProps>`
   cursor: pointer;
 `;
 
-export const SelectContainer = styled.div<DeliveryProps>`
+export const SelectContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
