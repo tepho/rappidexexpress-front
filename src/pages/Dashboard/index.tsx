@@ -71,6 +71,10 @@ export function Dashboard() {
         let newStatus;
 
         if(report.status === StatusDelivery.PENDING){
+            if(!selectedMotoboy){
+                alert('Selecione o motoboy')
+            }
+    
             newStatus = StatusDelivery.ONCOURSE
             data = {
                 'status': newStatus,
@@ -99,6 +103,20 @@ export function Dashboard() {
 
     async function handlerSave(report: Report) {
         console.log(report)
+
+        if(!selectedMotoboy){
+            alert('Selecione o motoboy')
+        }
+
+        try {
+            await api.put(`/delivery/${report.id}`, {
+                'motoboyId': selectedMotoboy
+            })
+            getData()
+            alert(`Motoboy foi atualizado com sucesso.`)
+        } catch (error) {
+            alert(error.response.data.message)
+        }
     }
 
     async function handlerDelete(report: Report) {
@@ -179,6 +197,7 @@ export function Dashboard() {
                                                 value={selectedMotoboy}
                                                 onChange={e => setSelectedMotoboy(e.target.value)}
                                             >
+                                                <option value="">Selecione o motoboy:</option>
                                                 {
                                                     motoboys.map((motoboy: User) => 
                                                         <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
