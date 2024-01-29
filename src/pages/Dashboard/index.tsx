@@ -3,6 +3,7 @@ import { WhatsappLogo } from 'phosphor-react'
 
 import { DeliveryContext } from "../../context/DeliveryContext";
 import api from "../../services/api";
+import { Report, User } from '../../shared/interfaces'
 
 import { 
     BaseButton, 
@@ -36,7 +37,8 @@ export function Dashboard() {
     const [assignedReport, setAssignedReport] = useState(false)
     const [selectedMotoboy, setSelectedMotoboy] = useState('')
 
-    console.log(reports)
+    // console.log(reports)
+    console.log(motoboys)
     function onClickReportType() {
         setIsFreeReport(!isFreeReport)
         setAssignedReport(!assignedReport)
@@ -51,6 +53,7 @@ export function Dashboard() {
             if (permission !== 'shopkeeper') {
                 const motoboysRes = await api.get('/user?type=motoboy')
                 setMotoboys(motoboysRes.data.data)
+                
             }
 
             setLoading(false)
@@ -61,11 +64,11 @@ export function Dashboard() {
         }
     }
 
-    async function handlerNextStep(report) {
+    async function handlerNextStep(report: Report) {
         console.log(report)
     }
 
-    async function handlerDelete(report) {
+    async function handlerDelete(report: Report) {
         try {
             await api.delete(`/delivery/${report.id}`)
             alert('Solicitação apagada com sucesso.')
@@ -93,7 +96,7 @@ export function Dashboard() {
                     loading ? 
                         <Loader size={40} biggestColor="green" smallestColor="gray" /> :
                         <>
-                            { reports.map((report) =>
+                            { reports.map((report: Report) =>
                                 <Delivery key={report.id} isfree={report.status === 'PENDENTE'}>
                                     <ContainerShopkeeper>
                                         <ContainerImagem>
@@ -144,7 +147,7 @@ export function Dashboard() {
                                                 onChange={e => setSelectedMotoboy(e.target.value)}
                                             >
                                                 {
-                                                    motoboys.map(motoboy => 
+                                                    motoboys.map((motoboy: User) => 
                                                         <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
                                                     )
                                                 }
