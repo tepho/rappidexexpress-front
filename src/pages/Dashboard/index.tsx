@@ -23,6 +23,7 @@ import {
     ContainerImagem,
 } from "./styles";
 import { Loader } from '../../components/Loader';
+import { StatusDelivery } from "../../shared/constants/enums.constants";
 
 export function Dashboard() {
     const { token, permission } = useContext(DeliveryContext)
@@ -34,20 +35,21 @@ export function Dashboard() {
     const [motoboys, setMotoboys] = useState([]);
 
     const [isFreeReport, setIsFreeReport] = useState(true)
-    const [assignedReport, setAssignedReport] = useState(false)
     const [selectedMotoboy, setSelectedMotoboy] = useState('')
 
     // console.log(reports)
     console.log(motoboys)
-    function onClickReportType() {
-        setIsFreeReport(!isFreeReport)
-        setAssignedReport(!assignedReport)
+    function onClickReportType(handleIsFree: boolean) {
+        setIsFreeReport(handleIsFree)
+        getData()
     }
 
     async function getData() {
         setLoading(true)
+        console.log(isFreeReport)
+        const status = isFreeReport ? StatusDelivery.PENDING : `${StatusDelivery.ONCOURSE},${StatusDelivery.COLLECTED}`
         try {
-            const response = await api.get(`/delivery?status=PENDENTE`)
+            const response = await api.get(`/delivery?status=${status}`)
             setReports(response.data.data)
 
             if (permission !== 'shopkeeper') {
@@ -65,6 +67,37 @@ export function Dashboard() {
     }
 
     async function handlerNextStep(report: Report) {
+        let data;
+        let newStatus;
+
+        if(report.status === StatusDelivery.PENDING){
+            newStatus = StatusDelivery.ONCOURSE
+            data = {
+                'status': newStatus,
+                'motoboyId': selectedMotoboy
+            }
+        } else if(report.status === StatusDelivery.ONCOURSE){
+            newStatus = StatusDelivery.COLLECTED
+            data = {
+                'status': newStatus
+            }
+        } else if(report.status === StatusDelivery.COLLECTED){
+            newStatus = StatusDelivery.FINISHED
+            data = {
+                'status': newStatus
+            }
+        }
+
+        try {
+            await api.put(`/delivery/${report.id}`, data)
+            getData()
+            alert(`Solicitação avançada para o passo ${newStatus}`)
+        } catch (error) {
+            alert(error.response.data.message)
+        }
+    }
+
+    async function handlerSave(report: Report) {
         console.log(report)
     }
 
@@ -88,8 +121,8 @@ export function Dashboard() {
     return (
         <Container>
             <ContainerButtons>
-                    <BaseButton typeReport={isFreeReport} onClick={onClickReportType}>Livres</BaseButton>
-                    <BaseButton typeReport={assignedReport} onClick={onClickReportType}>Atribuídos</BaseButton>
+                    <BaseButton typeReport={isFreeReport} onClick={() => onClickReportType(true)}>Livres</BaseButton>
+                    <BaseButton typeReport={!isFreeReport} onClick={() => onClickReportType(false)}>Atribuídos</BaseButton>
             </ContainerButtons>
             <ContainerDeliveries>
                 {
@@ -156,8 +189,12 @@ export function Dashboard() {
                                     }
                                     <OrderActions>
                                         {
+                                            permission === "admin" && report.status === "ACAMINHO" &&
+                                            <OrderButton typebutton={true} onClick={() => handlerSave(report)}>Salvar</OrderButton>
+                                        }
+                                        {
                                             permission !== "shopkeeper" &&
-                                            <OrderButton typebutton={true} onClick={() => handlerNextStep(report)}>Atribuir</OrderButton>
+                                            <OrderButton typebutton={true} onClick={() => handlerNextStep(report)}>Avançar</OrderButton>
                                         }
                                         {
                                             permission !== "motoboy" && report.status === "PENDENTE" &&
