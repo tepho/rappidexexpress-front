@@ -56,10 +56,10 @@ export function Reports() {
             param = `${param}&establishmentId=${selectedEstablishment}`
         }
         if(createdIn){
-            param = `${param}&createdIn=${createdIn}`
+            param = `${param}&createdIn=${createdIn}T00:00:00.000Z`
         }
         if(createdUntil){
-            param = `${param}&createdUntil=${createdUntil}`
+            param = `${param}&createdUntil=${createdUntil}T23:59:59.000Z`
         }
 
         try {
