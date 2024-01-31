@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useParams } from 'react-router-dom'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
 
@@ -21,7 +22,7 @@ const ProfileFormValidationSchema = zod.object({
       .min(11, 'Informe o seu numero.')
       .max(11),
     user: zod.string(),
-    password: zod.string().min(4, 'Informe a senha.'),
+    password: zod.string(),
     pix: zod.string(),
     profileImage: zod.string(),
     location: zod.string()
@@ -34,24 +35,31 @@ export function NewUser(){
     const { token } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
 
+    const { user } = useParams();
+
+    console.log(user);
+
+    const [userId, setUserId] = useState()
+    const [formValues, setFormValues] = useState({
+        name: '',
+        phone: '',
+        user: '',
+        password: '',
+        pix: '',
+        profileImage: '',
+        location: '',
+    })
+
     const [loading, setLoading] = useState(false)
     const [selectedType, setSelectedType] = useState('')
     const profileFormData = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
-        defaultValues: {
-            name: '',
-            phone: '',
-            user: '',
-            password: '',
-            pix: '',
-            profileImage: '',
-            location: '',
-        },
+        values: formValues,
     })
 
     const { handleSubmit, watch, register, reset } = profileFormData
 
-    async function handleSave(data: ProfileFormData) {
+    async function handleCreate(data: ProfileFormData) {
         if(loading){
             return
         }
@@ -76,6 +84,56 @@ export function NewUser(){
         // navigate('/dashboard')
     }
 
+    async function handleSave(data: ProfileFormData){
+        console.log(data)
+        if(loading){
+            return
+        }
+
+        console.log(selectedType)
+
+        setLoading(true)
+
+        const { name, phone, user, pix, profileImage, location } = data;
+        try {
+            await api.put(`/user/${userId}`, {
+                name,
+                phone,
+                user,
+                pix,
+                profileImage,
+                location
+            })
+            setLoading(false)
+            alert("Usuário editado com sucesso!")
+        } catch (error) {
+            setLoading(false)
+            alert(error.response.data.message)
+        }
+        console.log(data)
+        // navigate('/dashboard')
+    }
+
+    async function submitForm(data: ProfileFormData) {
+        if(user){
+            handleSave(data)
+        } else {
+            handleCreate(data)
+        }
+    }
+
+    async function getUserData(){
+        let userFinded;
+        try {
+            userFinded = await api.get(`/user/${user}`)
+            setFormValues(userFinded.data)
+            setUserId(userFinded.data.id)
+        } catch (error) {
+            setLoading(false)
+            alert(error.response.data.message)
+        }
+    }
+
     const name = watch('name')
     const phone = watch('phone')
     const pix = watch('pix')
@@ -83,9 +141,13 @@ export function NewUser(){
     // const location = watch('location')
     const isSubmitDisabled = !name || !phone || !pix || !profileImage || phone.length < 11
 
+    useEffect(() => {
+        getUserData()
+    }, [user])
+
     return (
         <Container>
-            <form onSubmit={handleSubmit(handleSave)} action="">
+            <form onSubmit={handleSubmit(submitForm)} action="">
 
                 <FormContainer>
                     
@@ -162,7 +224,7 @@ export function NewUser(){
                         <BaseButton disabled={isSubmitDisabled} type="submit">
                             {loading ?
                                 <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
-                                "Criar novo usuário"
+                                user ? "Salvar" : "Criar novo usuário"
                             }
                         </BaseButton>
                         
