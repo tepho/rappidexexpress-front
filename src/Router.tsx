@@ -24,6 +24,7 @@ export function Router() {
           <Route path="/relatorios" element={<Reports />} />
           <Route path="/perfil" element={<Profile />} />
           <Route path="/novo-usuario" element={<NewUser />} />
+          <Route path="/novo-usuario/:user" element={<NewUser />} />
           <Route path="/alterar-senha" element={<ChangePassword />} />
           <Route path="/nova-entrega" element={<NewDelivery />} />
         </Route>
