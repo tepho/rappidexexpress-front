@@ -47,7 +47,6 @@ export function Reports() {
     }
 
     async function onClickSearch(){
-        console.log({selectedStatus, selectedMotoboy, selectedEstablishment, createdIn, createdUntil});
         let param = '';
         if(selectedMotoboy){
             param = `${param}&motoboyId=${selectedMotoboy}`

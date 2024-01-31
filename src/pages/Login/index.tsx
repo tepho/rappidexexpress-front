@@ -36,7 +36,6 @@ export function Login() {
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
     async function handleLogin(data: NewLoginFormData) {
-        console.log(data)
         if(loading) {
             return
         }
@@ -44,7 +43,6 @@ export function Login() {
         setLoading(true)
         try {
             const reponse = await api.post('/auth', data)
-            console.log(reponse.data)
             login(reponse.data.token, reponse.data.permission)
             reset()
             navigate('/')

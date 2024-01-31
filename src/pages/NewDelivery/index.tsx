@@ -73,8 +73,6 @@ export function NewDelivery(){
             setLoading(false)
             alert(error.response.data.message)
         }
-        console.log(data)
-        // navigate('/dashboard')
     }
 
     const clientName = watch('clientName')

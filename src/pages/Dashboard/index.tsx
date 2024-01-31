@@ -38,8 +38,6 @@ export function Dashboard() {
     const [isFreeReport, setIsFreeReport] = useState(true)
     const [selectedMotoboy, setSelectedMotoboy] = useState('')
 
-    // console.log(reports)
-    console.log(motoboys)
     function onClickReportType(handleIsFree: boolean) {
         setIsFreeReport(handleIsFree)
         getData()
@@ -47,7 +45,6 @@ export function Dashboard() {
 
     async function getData() {
         setLoading(true)
-        console.log(isFreeReport)
         const status = isFreeReport ? StatusDelivery.PENDING : `${StatusDelivery.ONCOURSE},${StatusDelivery.COLLECTED}`
         try {
             const response = await api.get(`/delivery?status=${status}`)
@@ -60,8 +57,6 @@ export function Dashboard() {
             }
 
             setLoading(false)
-            console.log(reports)
-            console.log(response.data.data)
         } catch (error) {
             alert(error.response.data.message)
         }
@@ -103,8 +98,6 @@ export function Dashboard() {
     }
 
     async function handlerSave(report: Report) {
-        console.log(report)
-
         if(!selectedMotoboy){
             alert('Selecione o motoboy')
         }
@@ -132,7 +125,6 @@ export function Dashboard() {
 
     useEffect(() => {
         if(loading) {
-            console.log('getData')
             getData()
         }
     })

@@ -46,7 +46,6 @@ export function ChangePassword() {
     const isSubmitDisabled = !oldPassword || !newPassword
 
     async function handleSave(data: ChangePassFormData) {
-        console.log(data)
         if(loading) {
             return
         }
@@ -54,7 +53,6 @@ export function ChangePassword() {
         setLoading(true)
         try {
             const reponse = await api.post('/auth/change-password', data)
-            console.log(reponse.data)
             reset()
             setLoading(false)
             alert("Senha alterada com sucesso!")
