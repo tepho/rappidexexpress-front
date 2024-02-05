@@ -35,6 +35,22 @@ export function Login() {
 
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
+    async function configureNotification(user: string){
+        navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
+            let subscription = await serviceWorker.pushManager.getSubscription()
+          
+            if (!subscription){
+              const publicKey = process.env.PUBLICKEY_NOTIFICATION;
+              subscription = await serviceWorker.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: publicKey,
+              })
+            }
+
+            await api.put(`/user/${user}/notification-config`, { notification: subscription })
+          })
+    }
+
     async function handleLogin(data: NewLoginFormData) {
         if(loading) {
             return
@@ -44,6 +60,7 @@ export function Login() {
         try {
             const reponse = await api.post('/auth', data)
             login(reponse.data.token, reponse.data.permission)
+            await configureNotification(data.user)
             reset()
             navigate('/')
             setLoading(false)
