@@ -9,6 +9,10 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "engines" : { 
+    "npm" : "9.6.7",
+    "node" : "20.9.0"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
     "axios": "^1.6.5",
