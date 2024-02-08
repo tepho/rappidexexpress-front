@@ -138,3 +138,9 @@ export const SelectContainer = styled.div`
     color: ${(props) => props.theme['gray-100']};
   }
 `;
+
+export const ContainerLoading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

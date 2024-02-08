@@ -22,6 +22,7 @@ import {
     OrderButton,
     SelectContainer,
     ContainerImagem,
+    ContainerLoading,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 import { StatusDelivery } from "../../shared/constants/enums.constants";
@@ -139,7 +140,9 @@ export function Dashboard() {
             <ContainerDeliveries>
                 {
                     loading ? 
-                        <Loader size={40} biggestColor="green" smallestColor="gray" /> :
+                        <ContainerLoading>
+                            <Loader size={40} biggestColor="green" smallestColor="gray" />
+                        </ContainerLoading> :
                         <>
                             { reports.map((report: Report) =>
                                 <Delivery key={report.id} isfree={report.status === 'PENDENTE'}>
