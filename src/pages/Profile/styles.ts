@@ -33,6 +33,7 @@ export const ContainerProfileImage = styled.div`
 
 export const ProfileImage = styled.img`
   height: 12rem;
+  width: 12rem;
   border-radius: 100%;
 `;
 

@@ -75,6 +75,7 @@ export const ContainerShopkeeper = styled.div`
 
 export const ShopkeeperProfileImage = styled.img`
   height: 6rem;
+  width: 6rem;
   border-radius: 100%;
 `;
 
