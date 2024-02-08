@@ -18,7 +18,7 @@ import {
 } from "./styles";
 import api from "../../services/api";
 import { DeliveryContext } from "../../context/DeliveryContext";
-import { User } from "../../shared/interfaces";
+import { User, Report } from "../../shared/interfaces";
 
 export function Reports() {
     const { token } = useContext(DeliveryContext)
@@ -158,7 +158,7 @@ export function Reports() {
 
             <ReportsContainer>
                 <h3>Quantidade de entregas: {reportsAmount}</h3>
-                {reports.map((report) => 
+                {reports.map((report: Report) => 
                     <Delivery key={report.id}>
                         <ContainerShopkeeper>
                             <ProfileImageContainer>
