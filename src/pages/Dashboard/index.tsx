@@ -23,6 +23,8 @@ import {
     SelectContainer,
     ContainerImagem,
     ContainerLoading,
+    ContainerStatus,
+    Status,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 import { StatusDelivery } from "../../shared/constants/enums.constants";
@@ -164,7 +166,9 @@ export function Dashboard() {
                                     {!isFreeReport &&
                                     <>
                                         <ContainerOrder>
-                                            <p>Status: {report.status}</p>
+                                            <ContainerStatus>
+                                            <p>Status:</p><Status type={report.status}>{report.status}</Status>
+                                            </ContainerStatus>
                                             <p>Forma de pagamento: {report.payment}</p>
                                             <p>Valor: R$ {report.value}</p>
                                             <p>Pix: </p>

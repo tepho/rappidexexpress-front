@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { StatusDelivery } from '../../shared/constants/enums.constants';
 
 export const Container = styled.main`
   flex: 1;
@@ -143,4 +144,19 @@ export const ContainerLoading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const ContainerStatus = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+interface StatusProps {
+  type: string
+}
+
+export const Status = styled.p<StatusProps>`
+  background-color: ${(props) => props.type === StatusDelivery.ONCOURSE ? 'blue' : 'green'};
 `;
