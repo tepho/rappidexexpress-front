@@ -32,3 +32,10 @@ export const HeaderContainer = styled.header`
     }
   }
 `
+
+export const RappidexLogo = styled.img`
+  height: 2rem;
+  width: 2rem;
+  border-radius: 100%;
+`;
+

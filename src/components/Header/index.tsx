@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { PhosphorLogo, Hamburger, Scroll, User, SignOut, FilePlus, UserPlus } from 'phosphor-react'
+import { Hamburger, Scroll, User, SignOut, FilePlus, UserPlus } from 'phosphor-react'
 
-import { HeaderContainer } from './styles'
+import { HeaderContainer, RappidexLogo } from './styles'
 import { DeliveryContext } from '../../context/DeliveryContext'
 
 export function Header() {
@@ -14,7 +14,9 @@ export function Header() {
 
   return (
     <HeaderContainer>
-    <PhosphorLogo size={40} />
+      <NavLink to="/" title="Entregas">
+        <RappidexLogo src="https://i.pinimg.com/736x/a5/9f/17/a59f176343c6fd0d83adea72eaf0c57f.jpg" />
+      </NavLink>
       <nav>
         {permission === 'admin' && 
           <NavLink to="/novo-usuario" title="Novo Usuário">
