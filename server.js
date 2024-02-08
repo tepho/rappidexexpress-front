@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 import express from 'express'
-import { resolver } from 'path'
+import { resolve } from 'path'
 
 const app = express()
 
 app.use('/', express.static(
-    resolver(
+    resolve(
         __dirname,
         './dist'
     )
