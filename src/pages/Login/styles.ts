@@ -13,7 +13,7 @@ export const Container = styled.main`
     align-items: center;
     justify-content: center;
 
-    margin-top: 22rem;
+    margin-top: 18rem;
   }
 `
 
@@ -68,3 +68,10 @@ export const BaseInput = styled.input`
     color: ${(props) => props.theme['gray-500']};
   }
 `
+
+export const Logo = styled.img`
+  height: 8rem;
+  width: 8rem;
+  border-radius: 100%;
+  margin-bottom: 2rem;
+`;

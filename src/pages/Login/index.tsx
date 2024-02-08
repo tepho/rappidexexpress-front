@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { SignIn  } from 'phosphor-react'
 
 import { DeliveryContext } from '../../context/DeliveryContext';
-import { BaseButton, BaseInput, Container, FormContainer } from "./styles";
+import { BaseButton, BaseInput, Container, FormContainer, Logo } from "./styles";
 import { Loader } from '../../components/Loader';
 
 import api from '../../services/api';
@@ -79,6 +79,7 @@ export function Login() {
         <Container> 
             <form onSubmit={handleSubmit(handleLogin)} action="">
                 <FormContainer>
+                    <Logo src="https://i.pinimg.com/736x/a5/9f/17/a59f176343c6fd0d83adea72eaf0c57f.jpg"  />
                     <BaseInput
                         type="text"
                         id="user"
