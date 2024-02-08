@@ -14,6 +14,7 @@ import {
     BaseButton
 } from "./styles";
 import { Loader } from '../../components/Loader';
+import { User } from '../../shared/interfaces';
 
 const DeliveryFormValidationSchema = zod.object({
     clientName: zod.string().min(3, 'Informe o nome do cliente.'),
@@ -151,7 +152,7 @@ export function NewDelivery(){
                     >
                         <option value="">Selecione uma opção:</option>
                         {
-                            shopkeepers.map(shopkeeper => 
+                            shopkeepers.map((shopkeeper: User) => 
                                 <option key={shopkeeper.id} value={shopkeeper.id}>{shopkeeper.name}</option>
                             )
                         }
@@ -167,7 +168,7 @@ export function NewDelivery(){
                                 >
                                     <option value="">Selecione uma opção:</option>
                                     {
-                                        motoboys.map(motoboy => 
+                                        motoboys.map((motoboy: User) => 
                                             <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
                                         )
                                     }

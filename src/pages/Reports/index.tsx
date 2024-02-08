@@ -18,6 +18,7 @@ import {
 } from "./styles";
 import api from "../../services/api";
 import { DeliveryContext } from "../../context/DeliveryContext";
+import { User } from "../../shared/interfaces";
 
 export function Reports() {
     const { token } = useContext(DeliveryContext)
@@ -130,7 +131,7 @@ export function Reports() {
                     >
                         <option value=''>Todos</option>
                         {
-                            motoboys.map(motoboy => 
+                            motoboys.map((motoboy: User) => 
                                 <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
                             )
                         }
@@ -145,7 +146,7 @@ export function Reports() {
                     >
                         <option value=''>Todos</option>
                         {
-                            shopkeepers.map(shopkeeper => 
+                            shopkeepers.map((shopkeeper: User) => 
                                 <option key={shopkeeper.id} value={shopkeeper.id}>{shopkeeper.name}</option>
                             )
                         }
