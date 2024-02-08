@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from "react";
 
 import { 
@@ -65,7 +66,7 @@ export function Reports() {
             const response = await api.get(`/delivery?status=${selectedStatus}${param}`)
             setReports(response.data.data)
             setReportsAmount(response.data.count)
-        } catch (error) {
+        } catch (error: any) {
             alert(error.response.data.message)
         }
     }
@@ -78,7 +79,7 @@ export function Reports() {
             setMotoboys(motoboysResponse.data.data)
             setShopkeepers(shopkeepersResponse.data.data)
             setLoadingInitial(false)
-        } catch (error) {
+        } catch (error: any) {
             alert(error.response.data.message)
         }
     }

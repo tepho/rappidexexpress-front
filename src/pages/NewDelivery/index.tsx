@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
@@ -69,7 +70,7 @@ export function NewDelivery(){
             reset()
             setLoading(false)
             alert("Nova solicitação de entrega criado com sucesso!")
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
         }
@@ -88,7 +89,7 @@ export function NewDelivery(){
             setMotoboys(motoboysResponse.data.data)
             setShopkeepers(shopkeepersResponse.data.data)
             setLoadingInitial(false)
-        } catch (error) {
+        } catch (error: any) {
             alert(error.response.data.message)
         }
     }
@@ -117,8 +118,8 @@ export function NewDelivery(){
                     <BaseInput
                         type="text"
                         id="clientPhone"
-                        minLength="11"
-                        maxLength="11"
+                        minLength={11}
+                        maxLength={11}
                         placeholder="Informe o whatsapp do cliente."
                         {...register('clientPhone')}
                     />

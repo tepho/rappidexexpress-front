@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from "react";
 import { WhatsappLogo } from 'phosphor-react'
 
@@ -57,7 +58,7 @@ export function Dashboard() {
             }
 
             setLoading(false)
-        } catch (error) {
+            } catch (error: any) {
             alert(error.response.data.message)
         }
     }
@@ -92,7 +93,7 @@ export function Dashboard() {
             await api.put(`/delivery/${report.id}`, data)
             getData()
             alert(`Solicitação avançada para o passo ${newStatus}`)
-        } catch (error) {
+        } catch (error: any) {
             alert(error.response.data.message)
         }
     }
@@ -108,7 +109,7 @@ export function Dashboard() {
             })
             getData()
             alert(`Motoboy foi atualizado com sucesso.`)
-        } catch (error) {
+        } catch (error: any) {
             alert(error.response.data.message)
         }
     }
@@ -118,7 +119,7 @@ export function Dashboard() {
             await api.delete(`/delivery/${report.id}`)
             alert('Solicitação apagada com sucesso.')
             getData()
-        } catch (error) {
+        } catch (error: any) {
             alert(error.response.data.message)
         }
     }

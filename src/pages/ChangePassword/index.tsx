@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom';
 
 import { 
     BaseButton,
@@ -26,8 +25,6 @@ type ChangePassFormData = zod.infer<typeof ChangePassFormValidationSchema>
 export function ChangePassword() {
     const { token } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
-
-    const navigate = useNavigate()
     
     const [loading, setLoading] = useState(false)
     const changePasswordFormData = useForm<ChangePassFormData>({
@@ -52,11 +49,12 @@ export function ChangePassword() {
 
         setLoading(true)
         try {
-            const reponse = await api.post('/auth/change-password', data)
+            await api.post('/auth/change-password', data)
             reset()
             setLoading(false)
             alert("Senha alterada com sucesso!")
-        } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
         }

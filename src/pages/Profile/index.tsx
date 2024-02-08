@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -60,7 +61,6 @@ export function Profile(){
     async function getMyData(){
         try {
             const response = await api.get('/user/myself')
-            console.log(response.data)
             setFormValues({
                 name: response.data.name,
                 phone: response.data.phone,
@@ -70,7 +70,7 @@ export function Profile(){
             })
             setProfileImage(response.data.profileImage)
             setLoading(false)
-        } catch (error) {
+        } catch (error: any) {
             alert(error.response.data.message)
         }
     }
@@ -105,8 +105,8 @@ export function Profile(){
                         <BaseInput
                             type="text"
                             id="phone"
-                            minlength="11"
-                            maxlength="11"
+                            minLength={11}
+                            maxLength={11}
                             placeholder="Informe o seu whatsapp."
                             disabled
                             {...register('phone')}

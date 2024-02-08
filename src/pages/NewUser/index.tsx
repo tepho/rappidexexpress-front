@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams } from 'react-router-dom'
@@ -37,8 +38,6 @@ export function NewUser(){
 
     const { user } = useParams();
 
-    console.log(user);
-
     const [userId, setUserId] = useState()
     const [formValues, setFormValues] = useState({
         name: '',
@@ -64,8 +63,6 @@ export function NewUser(){
             return
         }
 
-        console.log(selectedType)
-
         setLoading(true)
         try {
             await api.post('/user', {
@@ -76,21 +73,16 @@ export function NewUser(){
             reset()
             setLoading(false)
             alert("Novo usuário criado com sucesso!")
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
         }
-        console.log(data)
-        // navigate('/dashboard')
     }
 
     async function handleSave(data: ProfileFormData){
-        console.log(data)
         if(loading){
             return
         }
-
-        console.log(selectedType)
 
         setLoading(true)
 
@@ -106,12 +98,10 @@ export function NewUser(){
             })
             setLoading(false)
             alert("Usuário editado com sucesso!")
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
         }
-        console.log(data)
-        // navigate('/dashboard')
     }
 
     async function submitForm(data: ProfileFormData) {
@@ -128,7 +118,7 @@ export function NewUser(){
             userFinded = await api.get(`/user/${user}`)
             setFormValues(userFinded.data)
             setUserId(userFinded.data.id)
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
         }
@@ -163,8 +153,8 @@ export function NewUser(){
                     <BaseInput
                         type="text"
                         id="phone"
-                        minLength="11"
-                        maxLength="11"
+                        minLength={11}
+                        maxLength={11}
                         placeholder="Informe o whatsapp."
                         {...register('phone')}
                     />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom';
@@ -64,7 +65,7 @@ export function Login() {
             reset()
             navigate('/')
             setLoading(false)
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
         }
