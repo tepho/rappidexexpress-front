@@ -12,16 +12,14 @@ import {
     Container,
     ContainerButtons,
     FormContainer,
-    BaseButton
+    BaseButton,
+    BaseInputMask,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 
 const ProfileFormValidationSchema = zod.object({
     name: zod.string().min(5, 'Informe o seu nome.'),
-    phone: zod
-      .string()
-      .min(11, 'Informe o seu numero.')
-      .max(11),
+    phone: zod.string(),
     user: zod.string(),
     password: zod.string(),
     pix: zod.string(),
@@ -150,11 +148,10 @@ export function NewUser(){
                     />
 
                     <label htmlFor="phone">Whatsapp:</label>
-                    <BaseInput
+                    <BaseInputMask
                         type="text"
+                        mask='(99) 99999-9999' 
                         id="phone"
-                        minLength={11}
-                        maxLength={11}
                         placeholder="Informe o whatsapp."
                         {...register('phone')}
                     />
