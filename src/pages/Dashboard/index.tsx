@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from "react";
-import { WhatsappLogo } from 'phosphor-react'
+import { WhatsappLogo, MapPin } from 'phosphor-react'
 
 import { DeliveryContext } from "../../context/DeliveryContext";
 import api from "../../services/api";
@@ -158,7 +158,7 @@ export function Dashboard() {
                                                 {report.establishmentPhone} <WhatsappLogo size={18} />
                                             </Link>
                                             <Link href={report.establishmentLocation} target="_blank" rel="noopener noreferrer">
-                                                <p>Localização</p>
+                                                <p>Localização</p> <MapPin size={18} />
                                             </Link>
                                         </ShopkeeperInfo>
                                     </ContainerShopkeeper>
@@ -171,7 +171,7 @@ export function Dashboard() {
                                             </ContainerStatus>
                                             <p>Forma de pagamento: {report.payment}</p>
                                             <p>Valor: R$ {report.value}</p>
-                                            <p>Pix: </p>
+                                            <p>Pix: {report.establishmentPix}</p>
                                         </ContainerOrder>
 
                                         <ContainerInfo>
