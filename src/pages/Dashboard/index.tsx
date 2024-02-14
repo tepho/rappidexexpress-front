@@ -127,6 +127,17 @@ export function Dashboard() {
         }
     }
 
+    function formatPhoneNumber(phone: string){
+        const number = `+55${phone}`
+        const cleaned = ('' + number).replace(/\D/g, '');
+        const match = cleaned.match(/^(\d{2})(\d{2})(\d{4}|\d{5})(\d{4})$/);
+
+        if (match) {
+            return ['(', match[2], ')', match[3], '-', match[4]].join('')
+        }
+        return '';
+    }
+
     useEffect(() => {
         if(loading) {
             getData()
@@ -155,7 +166,7 @@ export function Dashboard() {
                                         <ShopkeeperInfo>
                                             <p>{report.establishmentName}</p>
                                             <Link href={getLinkToWhatsapp(report.establishmentPhone)} target="_blank" rel="noopener noreferrer">
-                                                {report.establishmentPhone} <WhatsappLogo size={18} />
+                                                {formatPhoneNumber(report.establishmentPhone)} <WhatsappLogo size={18} />
                                             </Link>
                                             <Link href={report.establishmentLocation} target="_blank" rel="noopener noreferrer">
                                                 <p>Localização</p> <MapPin size={18} />
@@ -177,14 +188,14 @@ export function Dashboard() {
                                         <ContainerInfo>
                                             <p>Cliente: {report.clientName} </p>
                                             <Link href={getLinkToWhatsapp(report.clientPhone)} target="_blank" rel="noopener noreferrer">
-                                                {report.clientPhone} <WhatsappLogo size={18} />
+                                                {formatPhoneNumber(report.clientPhone)} <WhatsappLogo size={18} />
                                             </Link>
                                         </ContainerInfo>
 
                                         <ContainerInfo>
                                             <p>Motoboy: {report.motoboyName} </p>
                                             <Link href={getLinkToWhatsapp(report.motoboyPhone)} target="_blank" rel="noopener noreferrer">
-                                                {report.motoboyPhone} <WhatsappLogo size={18} />
+                                                {formatPhoneNumber(report.motoboyPhone)} <WhatsappLogo size={18} />
                                             </Link>
                                         </ContainerInfo>
 
