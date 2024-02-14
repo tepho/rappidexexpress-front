@@ -11,17 +11,15 @@ import {
     Container,
     ContainerButtons,
     FormContainer,
-    BaseButton
+    BaseButton,
+    BaseInputMask,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 import { User } from '../../shared/interfaces';
 
 const DeliveryFormValidationSchema = zod.object({
     clientName: zod.string().min(3, 'Informe o nome do cliente.'),
-    clientPhone: zod
-      .string()
-      .min(11, 'Informe o numero do cliente.')
-      .max(11),
+    clientPhone: zod.string(),
     value: zod.string(),
   })
 
@@ -63,6 +61,7 @@ export function NewDelivery(){
         try {
             await api.post('/delivery', {
                 ...data,
+                clientPhone: data.clientPhone.replace('(', '').replace(')', '').replace(' ', '').replace('-', ''),
                 status: "PENDENTE",
                 establishmentId,
                 motoboyId,
@@ -116,11 +115,10 @@ export function NewDelivery(){
                     />
 
                     <label htmlFor="clientPhone">Whatsapp do cliente:</label>
-                    <BaseInput
+                    <BaseInputMask
                         type="text"
+                        mask='(99) 99999-9999' 
                         id="clientPhone"
-                        minLength={11}
-                        maxLength={11}
                         placeholder="Informe o whatsapp do cliente."
                         {...register('clientPhone')}
                     />

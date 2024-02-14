@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import InputMask from 'react-input-mask';
 
 export const Container = styled.main`
   flex: 1;
@@ -83,4 +84,23 @@ export const BaseButton = styled.button`
 
   background: ${(props) => props.theme['green-700']};
   color: ${(props) => props.theme['gray-100']};
+`
+
+export const BaseInputMask = styled(InputMask)`
+  background: transparent;
+  height: 2.5rem;
+  border: 0;
+  border-bottom: 2px solid ${(props) => props.theme['gray-500']};
+  font-weight: bold;
+  font-size: 1.125rem;
+  color: ${(props) => props.theme['gray-100']};
+
+  &:focus {
+    box-shadow: none;
+    border-bottom: 2px solid ${(props) => props.theme['green-500']};
+  }
+
+  &::placeholder {
+    color: ${(props) => props.theme['gray-500']};
+  }
 `
