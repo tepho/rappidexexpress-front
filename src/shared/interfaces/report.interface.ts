@@ -8,6 +8,7 @@ export interface Report {
     establishmentName: string;
     establishmentPhone: string;
     establishmentLocation: string;
+    establishmentPix: string;
     id: string;
     isActive: boolean;
     motoboyId: string;
