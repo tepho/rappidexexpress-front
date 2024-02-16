@@ -28,7 +28,7 @@ import {
 } from "./styles";
 import { Loader } from '../../components/Loader';
 import { StatusDelivery } from "../../shared/constants/enums.constants";
-import { getLinkToWhatsapp } from "../../shared/constants/whatsapp.constants";
+import { getLinkToWhatsapp, messageTypes } from "../../shared/constants/whatsapp.constants";
 
 export function Dashboard() {
     const { token, permission } = useContext(DeliveryContext)
@@ -165,7 +165,7 @@ export function Dashboard() {
                                         </ContainerImagem>
                                         <ShopkeeperInfo>
                                             <p>{report.establishmentName}</p>
-                                            <Link href={getLinkToWhatsapp(report.establishmentPhone)} target="_blank" rel="noopener noreferrer">
+                                            <Link href={getLinkToWhatsapp(report.establishmentPhone, messageTypes.motoboy)} target="_blank" rel="noopener noreferrer">
                                                 {formatPhoneNumber(report.establishmentPhone)} <WhatsappLogo size={18} />
                                             </Link>
                                             <Link href={report.establishmentLocation} target="_blank" rel="noopener noreferrer">
@@ -187,14 +187,14 @@ export function Dashboard() {
 
                                         <ContainerInfo>
                                             <p>Cliente: {report.clientName} </p>
-                                            <Link href={getLinkToWhatsapp(report.clientPhone)} target="_blank" rel="noopener noreferrer">
+                                            <Link href={getLinkToWhatsapp(report.clientPhone, messageTypes.client)} target="_blank" rel="noopener noreferrer">
                                                 {formatPhoneNumber(report.clientPhone)} <WhatsappLogo size={18} />
                                             </Link>
                                         </ContainerInfo>
 
                                         <ContainerInfo>
                                             <p>Motoboy: {report.motoboyName} </p>
-                                            <Link href={getLinkToWhatsapp(report.motoboyPhone)} target="_blank" rel="noopener noreferrer">
+                                            <Link href={getLinkToWhatsapp(report.motoboyPhone, messageTypes.establishment)} target="_blank" rel="noopener noreferrer">
                                                 {formatPhoneNumber(report.motoboyPhone)} <WhatsappLogo size={18} />
                                             </Link>
                                         </ContainerInfo>
