@@ -12,7 +12,7 @@ export default defineConfig({
       manifest: {
         name: 'Rappidex Express',
         short_name: 'Rappidex Express',
-        theme_color: '#ffffff',
+        theme_color: '#202024',
         icons: [
             {
                 src: 'pwa-64x64.png',
