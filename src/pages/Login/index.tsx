@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom';
 import * as zod from 'zod'
@@ -46,21 +46,21 @@ export function Login() {
         await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
     }
 
-    async function configureNotification(user: string){
-        navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
-            let subscription = await serviceWorker.pushManager.getSubscription()
+    // async function configureNotification(user: string){
+    //     navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
+    //         let subscription = await serviceWorker.pushManager.getSubscription()
           
-            if (!subscription){
-              const publicKey = 'BEb4ce6Gm773mCsljXb5OS0h7aCO4F4MoXxBZb5Y4stBMBhs9_k74QvqdHoxIVOpYDX2sGjHL_FBgbrcA4EDjcw';
-              subscription = await serviceWorker.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: publicKey,
-              })
-            }
+    //         if (!subscription){
+    //           const publicKey = 'BEb4ce6Gm773mCsljXb5OS0h7aCO4F4MoXxBZb5Y4stBMBhs9_k74QvqdHoxIVOpYDX2sGjHL_FBgbrcA4EDjcw';
+    //           subscription = await serviceWorker.pushManager.subscribe({
+    //             userVisibleOnly: true,
+    //             applicationServerKey: publicKey,
+    //           })
+    //         }
 
-            await api.put(`/user/${user}/notification-config`, { notification: subscription })
-          })
-    }
+    //         await api.put(`/user/${user}/notification-config`, { notification: subscription })
+    //       })
+    // }
 
     async function handleLogin(data: NewLoginFormData) {
         if(loading) {
@@ -81,10 +81,6 @@ export function Login() {
             alert(error.response.data.message)
         }
     }
-
-    useEffect(() => {
-        runOneSignal();
-    });
 
     const user = watch('user')
     const password = watch('password')
