@@ -40,9 +40,13 @@ export function Login() {
 
     async function runOneSignal(username: string){
         // await OneSignal.init({ appId: 'b0d375dc-8f89-4bee-ac54-0a04fef00ebc'});
-        console.log(OneSignal);
-        await OneSignal.Slidedown.promptPush();
         console.log(OneSignal.User.PushSubscription.id)
+        console.log(OneSignal);
+        if(OneSignal && OneSignal?.User?.PushSubscription?.id){
+            await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
+            return
+        }
+        await OneSignal.Slidedown.promptPush();
         await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
     }
 
