@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom';
 import * as zod from 'zod'
@@ -11,6 +11,7 @@ import { BaseButton, BaseInput, Container, FormContainer, Logo } from "./styles"
 import { Loader } from '../../components/Loader';
 
 import api from '../../services/api';
+import OneSignal from 'react-onesignal';
 
 const newLoginFormValidationSchema = zod.object({
     user: zod.string().min(3,'Informe o usuario.'),
@@ -22,6 +23,7 @@ const newLoginFormValidationSchema = zod.object({
 type NewLoginFormData = zod.infer<typeof newLoginFormValidationSchema>
 
 export function Login() {
+
     const { login } = useContext(DeliveryContext)
     const navigate = useNavigate()
     const newLoginFormData = useForm<NewLoginFormData>({
@@ -35,6 +37,12 @@ export function Login() {
     const [loading, setLoading] = useState(false)
 
     const { handleSubmit, watch, reset, register } = newLoginFormData
+
+    async function runOneSignal(){
+        await OneSignal.init({ appId: 'b0d375dc-8f89-4bee-ac54-0a04fef00ebc'});
+        await OneSignal.Slidedown.promptPush();
+        console.log(OneSignal);
+    }
 
     async function configureNotification(user: string){
         navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
@@ -70,6 +78,10 @@ export function Login() {
             alert(error.response.data.message)
         }
     }
+
+    useEffect(() => {
+        runOneSignal();
+    });
 
     const user = watch('user')
     const password = watch('password')
