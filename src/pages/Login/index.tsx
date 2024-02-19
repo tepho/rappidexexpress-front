@@ -38,10 +38,12 @@ export function Login() {
 
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
-    async function runOneSignal(username: string){
+    async function runOneSignal(username: string, token: string){
         // await OneSignal.init({ appId: 'b0d375dc-8f89-4bee-ac54-0a04fef00ebc'});
         console.log(OneSignal.User.PushSubscription.id)
         console.log(OneSignal);
+
+        api.defaults.headers.Authorization = `Bearer ${token}`
         if(OneSignal && OneSignal?.User?.PushSubscription?.id){
             await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
             return
@@ -76,7 +78,7 @@ export function Login() {
             const reponse = await api.post('/auth', data)
             login(reponse.data.token, reponse.data.permission)
             // await configureNotification(data.user)
-            await runOneSignal(data.user)
+            await runOneSignal(data.user, reponse.data.token)
             reset()
             navigate('/')
             setLoading(false)
