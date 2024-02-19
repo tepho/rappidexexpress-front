@@ -39,9 +39,9 @@ export function Login() {
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
     async function runOneSignal(){
-        await OneSignal.init({ appId: 'b0d375dc-8f89-4bee-ac54-0a04fef00ebc'});
-        await OneSignal.Slidedown.promptPush();
+        // await OneSignal.init({ appId: 'b0d375dc-8f89-4bee-ac54-0a04fef00ebc'});
         console.log(OneSignal);
+        await OneSignal.Slidedown.promptPush();
     }
 
     async function configureNotification(user: string){
