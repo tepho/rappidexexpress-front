@@ -34,22 +34,17 @@ export function Dashboard() {
     const { token, permission } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
 
-    
+    const [status, setStatus] = useState(`${StatusDelivery.PENDING}`);
     const [loading, setLoading] = useState(true);
     const [reports, setReports] = useState([]);
     const [motoboys, setMotoboys] = useState([]);
 
-    const [isFreeReport, setIsFreeReport] = useState(true)
     const [selectedMotoboy, setSelectedMotoboy] = useState('')
-
-    function onClickReportType(handleIsFree: boolean) {
-        setIsFreeReport(handleIsFree)
-        getData()
-    }
 
     async function getData() {
         setLoading(true)
-        const status = isFreeReport ? StatusDelivery.PENDING : `${StatusDelivery.ONCOURSE},${StatusDelivery.COLLECTED}`
+        setReports([])
+
         try {
             const response = await api.get(`/delivery?status=${status}`)
             setReports(response.data.data)
@@ -57,7 +52,6 @@ export function Dashboard() {
             if (permission !== 'shopkeeper') {
                 const motoboysRes = await api.get('/user?type=motoboy')
                 setMotoboys(motoboysRes.data.data)
-                
             }
 
             setLoading(false)
@@ -138,17 +132,17 @@ export function Dashboard() {
         return '';
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
-        if(loading) {
-            getData()
-        }
-    })
+        getData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [status])
 
     return (
         <Container>
             <ContainerButtons>
-                    <BaseButton typeReport={isFreeReport} onClick={() => onClickReportType(true)}>Livres</BaseButton>
-                    <BaseButton typeReport={!isFreeReport} onClick={() => onClickReportType(false)}>Atribuídos</BaseButton>
+                    <BaseButton typeReport={status == StatusDelivery.PENDING} onClick={() => setStatus(StatusDelivery.PENDING)}>Livres</BaseButton>
+                    <BaseButton typeReport={status != StatusDelivery.PENDING} onClick={() => setStatus(`${StatusDelivery.ONCOURSE},${StatusDelivery.COLLECTED}`)}>Atribuídos</BaseButton>
             </ContainerButtons>
             <ContainerDeliveries>
                 {
@@ -174,7 +168,7 @@ export function Dashboard() {
                                         </ShopkeeperInfo>
                                     </ContainerShopkeeper>
 
-                                    {!isFreeReport &&
+                                    {status != StatusDelivery.PENDING &&
                                     <>
                                         <ContainerOrder>
                                             <ContainerStatus>
