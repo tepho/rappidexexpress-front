@@ -173,7 +173,7 @@ export function Reports() {
                             <p>Status: {report.status}</p>
                             <p>Forma de pagamento: {report.payment}</p>
                             <p>Valor: R$ {report.value}</p>
-                            <p>Pix: </p>
+                            <p>Pix: {report.establishmentPix}</p>
                         </ContainerOrder>
 
                         <ContainerInfo>
