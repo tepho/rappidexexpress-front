@@ -65,6 +65,7 @@ export function NewUser(){
         try {
             await api.post('/user', {
                 ...data,
+                phone: formatPhone(data.phone),
                 type: selectedType,
                 permission: selectedType === 'admin' ? selectedType : 'none',
             })
@@ -88,7 +89,7 @@ export function NewUser(){
         try {
             await api.put(`/user/${userId}`, {
                 name,
-                phone,
+                phone: formatPhone(phone),
                 user,
                 pix,
                 profileImage,
@@ -108,6 +109,10 @@ export function NewUser(){
         } else {
             handleCreate(data)
         }
+    }
+
+    function formatPhone(phone: string){
+        return phone.concat('(', '').concat(')', '').concat(' ', '').concat('-', '')
     }
 
     async function getUserData(){
