@@ -37,8 +37,8 @@ export function Header() {
         <NavLink to="/perfil" title="Perfil">
           <User  size={24} />
         </NavLink>
-        <NavLink to="/" title="Sair">
-          <SignOut onClick={handleLogout} size={24} />
+        <NavLink to="/" onClick={handleLogout} title="Sair">
+          <SignOut size={24} />
         </NavLink>
       </nav>
     </HeaderContainer>
