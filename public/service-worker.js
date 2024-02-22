@@ -1,8 +1,8 @@
-// self.addEventListener('push', function(event) {
-//     const body = event.data?.text() ?? ''
-//     event.waitUntil(
-//         self.registration.showNotification('DeliveryManager', {
-//             body
-//         })
-//     )
-// })
+self.addEventListener('push', function(event) {
+    const body = event.data?.text() ?? ''
+    event.waitUntil(
+        self.registration.showNotification('RappidexExpress', {
+            body
+        })
+    )
+})
