@@ -1,3 +1,4 @@
+import path from 'path';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa';
@@ -9,6 +10,9 @@ export default defineConfig({
     VitePWA({ 
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      srcDir: path.resolve(__dirname, 'resources/js/'),
+      filename: 'OneSignalSDKWorker.js',
+      strategies: 'injectManifest',
       manifest: {
         name: 'Rappidex Express',
         short_name: 'Rappidex Express',
