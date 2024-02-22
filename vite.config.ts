@@ -47,6 +47,13 @@ export default defineConfig({
       srcDir: path.resolve(__dirname, './dist'),
       filename: 'service-worker.js',
       strategies: 'injectManifest',
+
+      workbox: {
+        globDirectory: path.resolve(__dirname, 'public'),
+        globPatterns: [
+          '{build,images,sounds,icons}/**/*.{js,css,html,ico,png,jpg,mp4,svg}'
+        ],
+      },
     })
   ],
 })
