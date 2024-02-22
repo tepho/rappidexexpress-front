@@ -75,6 +75,7 @@ export function Login() {
             const reponse = await api.post('/auth', data)
             login(reponse.data.token, reponse.data.permission)
             // await configureNotification(data.user)
+            console.log({data: "run onesignal with", user: data.user, token: reponse.data.token})
             await runOneSignal(data.user, reponse.data.token)
             reset()
             navigate('/')
