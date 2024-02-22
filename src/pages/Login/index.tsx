@@ -11,7 +11,7 @@ import { BaseButton, BaseInput, Container, FormContainer, Logo } from "./styles"
 import { Loader } from '../../components/Loader';
 
 import api from '../../services/api';
-import OneSignal from 'react-onesignal';
+// import OneSignal from 'react-onesignal';
 
 const newLoginFormValidationSchema = zod.object({
     user: zod.string().min(3,'Informe o usuario.'),
@@ -38,32 +38,33 @@ export function Login() {
 
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
-    async function runOneSignal(username: string, token: string){
-        api.defaults.headers.Authorization = `Bearer ${token}`
-        console.log(OneSignal)
-        if(OneSignal && OneSignal?.User?.PushSubscription?.id){
-            await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
-            return
-        }
-        await OneSignal.Slidedown.promptPush();
-        await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
-    }
-
-    // async function configureNotification(user: string){
-    //     navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
-    //         let subscription = await serviceWorker.pushManager.getSubscription()
-          
-    //         if (!subscription){
-    //           const publicKey = 'BEb4ce6Gm773mCsljXb5OS0h7aCO4F4MoXxBZb5Y4stBMBhs9_k74QvqdHoxIVOpYDX2sGjHL_FBgbrcA4EDjcw';
-    //           subscription = await serviceWorker.pushManager.subscribe({
-    //             userVisibleOnly: true,
-    //             applicationServerKey: publicKey,
-    //           })
-    //         }
-
-    //         await api.put(`/user/${user}/notification-config`, { notification: subscription })
-    //       })
+    // async function runOneSignal(username: string, token: string){
+    //     api.defaults.headers.Authorization = `Bearer ${token}`
+    //     console.log(OneSignal)
+    //     if(OneSignal && OneSignal?.User?.PushSubscription?.id){
+    //         await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
+    //         return
+    //     }
+    //     await OneSignal.Slidedown.promptPush();
+    //     await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
     // }
+
+    async function configureNotification(user: string, token: string){
+        navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
+            api.defaults.headers.Authorization = `Bearer ${token}`
+            let subscription = await serviceWorker.pushManager.getSubscription()
+          
+            if (!subscription){
+              const publicKey = 'BP7wqrroeku3GAylVnUZPgkeg1ZPDDrm2gC924PcmCtLZy1S_OBxsJD6ur4Kut6Ua2iq81Bu8WML2UaA3nP3yWA';
+              subscription = await serviceWorker.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: publicKey,
+              })
+            }
+
+            await api.put(`/user/${user}/notification-config`, { notification: subscription })
+          })
+    }
 
     async function handleLogin(data: NewLoginFormData) {
         if(loading) {
@@ -76,7 +77,7 @@ export function Login() {
             login(reponse.data.token, reponse.data.permission)
             // await configureNotification(data.user)
             console.log({data: "run onesignal with", user: data.user, token: reponse.data.token})
-            await runOneSignal(data.user, reponse.data.token)
+            await configureNotification(data.user, reponse.data.token)
             reset()
             navigate('/')
             setLoading(false)
