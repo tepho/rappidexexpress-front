@@ -69,12 +69,6 @@ export function NewUser(){
                 type: selectedType,
                 permission: selectedType === 'admin' ? selectedType : 'none',
             })
-            console.log( {
-                ...data,
-                phone: formatPhone(data.phone),
-                type: selectedType,
-                permission: selectedType === 'admin' ? selectedType : 'none',
-            })
             reset()
             setLoading(false)
             alert("Novo usuário criado com sucesso!")
