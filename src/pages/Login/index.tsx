@@ -50,6 +50,10 @@ export function Login() {
     // }
 
     async function configureNotification(user: string, token: string){
+        console.log({
+            teste: 'novo mensageiro',
+            user,
+        })
         navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
             api.defaults.headers.Authorization = `Bearer ${token}`
             let subscription = await serviceWorker.pushManager.getSubscription()
@@ -61,6 +65,8 @@ export function Login() {
                 applicationServerKey: publicKey,
               })
             }
+
+            console.log(subscription)
 
             await api.put(`/user/${user}/notification-config`, { notification: subscription })
           })
