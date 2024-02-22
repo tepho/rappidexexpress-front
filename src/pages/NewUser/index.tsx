@@ -112,7 +112,7 @@ export function NewUser(){
     }
 
     function formatPhone(phone: string){
-        return phone.concat('(', '').concat(')', '').concat(' ', '').concat('-', '')
+        return phone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '')
     }
 
     async function getUserData(){
