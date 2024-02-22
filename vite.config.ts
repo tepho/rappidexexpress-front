@@ -10,7 +10,7 @@ export default defineConfig({
     VitePWA({ 
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
-      srcDir: path.resolve(__dirname, 'resources/js/'),
+      srcDir: path.resolve(__dirname, './'),
       filename: 'OneSignalSDKWorker.js',
       strategies: 'injectManifest',
       manifest: {
