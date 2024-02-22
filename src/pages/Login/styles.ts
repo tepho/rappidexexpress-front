@@ -21,6 +21,7 @@ export const BaseButton = styled.button`
   width: 100%;
   border: 0;
   padding: 1rem;
+  margin: 1rem;
   border-radius: 8px;
 
   display: flex;

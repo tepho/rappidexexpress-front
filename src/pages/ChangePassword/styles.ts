@@ -67,6 +67,7 @@ export const BaseButton = styled.button`
   width: 100%;
   border: 0;
   padding: 1rem;
+  margin: 0rem 0rem 1rem 0rem;
   border-radius: 8px;
 
   display: flex;
