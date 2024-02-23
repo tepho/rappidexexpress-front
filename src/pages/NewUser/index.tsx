@@ -62,6 +62,13 @@ export function NewUser(){
         }
 
         setLoading(true)
+
+        if(data.phone.includes('_')){
+            alert("Numero de telefone está faltando algum digito!")
+            setLoading(false)
+            return
+        }
+
         try {
             await api.post('/user', {
                 ...data,
