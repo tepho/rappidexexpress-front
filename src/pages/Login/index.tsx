@@ -58,13 +58,13 @@ export function Login() {
             api.defaults.headers.Authorization = `Bearer ${token}`
             let subscription = await serviceWorker.pushManager.getSubscription()
           
-            if (!subscription){
-              const publicKey = 'BAGRiJjxkVtCYwNHdUM9amJDdXecxMK73KLZQgEOUrT7sDMvcROMxA5Utzsbx1noeFOZz8R9yu7U3_1nuCfcQDY';
-              subscription = await serviceWorker.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: publicKey,
-              })
-            }
+            const publicKey = 'BAGRiJjxkVtCYwNHdUM9amJDdXecxMK73KLZQgEOUrT7sDMvcROMxA5Utzsbx1noeFOZz8R9yu7U3_1nuCfcQDY';
+            subscription = await serviceWorker.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: publicKey,
+            })
+            // if (!subscription){
+            // }
 
             console.log(subscription)
 
