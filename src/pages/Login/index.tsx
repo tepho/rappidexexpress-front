@@ -59,7 +59,7 @@ export function Login() {
             let subscription = await serviceWorker.pushManager.getSubscription()
           
             if (!subscription){
-              const publicKey = 'BP7wqrroeku3GAylVnUZPgkeg1ZPDDrm2gC924PcmCtLZy1S_OBxsJD6ur4Kut6Ua2iq81Bu8WML2UaA3nP3yWA';
+              const publicKey = 'BAGRiJjxkVtCYwNHdUM9amJDdXecxMK73KLZQgEOUrT7sDMvcROMxA5Utzsbx1noeFOZz8R9yu7U3_1nuCfcQDY';
               subscription = await serviceWorker.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: publicKey,
