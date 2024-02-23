@@ -11,6 +11,7 @@ import { BaseButton, BaseInput, Container, FormContainer, Logo } from "./styles"
 import { Loader } from '../../components/Loader';
 
 import api from '../../services/api';
+import OneSignal from 'react-onesignal';
 // import OneSignal from 'react-onesignal';
 
 const newLoginFormValidationSchema = zod.object({
@@ -38,39 +39,38 @@ export function Login() {
 
     const { handleSubmit, watch, reset, register } = newLoginFormData
 
-    // async function runOneSignal(username: string, token: string){
-    //     api.defaults.headers.Authorization = `Bearer ${token}`
-    //     console.log(OneSignal)
-    //     if(OneSignal && OneSignal?.User?.PushSubscription?.id){
-    //         await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
-    //         return
-    //     }
-    //     await OneSignal.Slidedown.promptPush();
-    //     await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
-    // }
-
-    async function configureNotification(user: string, token: string){
-        console.log({
-            teste: 'novo mensageiro',
-            user,
-        })
-        navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
-            api.defaults.headers.Authorization = `Bearer ${token}`
-            let subscription = await serviceWorker.pushManager.getSubscription()
-          
-            const publicKey = 'BAGRiJjxkVtCYwNHdUM9amJDdXecxMK73KLZQgEOUrT7sDMvcROMxA5Utzsbx1noeFOZz8R9yu7U3_1nuCfcQDY';
-            subscription = await serviceWorker.pushManager.subscribe({
-              userVisibleOnly: true,
-              applicationServerKey: publicKey,
-            })
-            // if (!subscription){
-            // }
-
-            console.log(subscription)
-
-            await api.put(`/user/${user}/notification-config`, { notification: subscription })
-          })
+    async function runOneSignal(username: string, token: string){
+        api.defaults.headers.Authorization = `Bearer ${token}`
+        console.log(OneSignal)
+        // if(OneSignal && OneSignal?.User?.PushSubscription?.id){
+        //     await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
+        //     return
+        // }
+        await OneSignal.Slidedown.promptPush();
+        await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
     }
+
+    // async function configureNotification(user: string, token: string){
+    //     console.log({
+    //         teste: 'novo mensageiro',
+    //         user,
+    //     })
+    //     navigator.serviceWorker.register('service-worker.js').then(async serviceWorker => {
+    //         api.defaults.headers.Authorization = `Bearer ${token}`
+    //         // let subscription = await serviceWorker.pushManager.
+    //         const publicKey = 'BAGRiJjxkVtCYwNHdUM9amJDdXecxMK73KLZQgEOUrT7sDMvcROMxA5Utzsbx1noeFOZz8R9yu7U3_1nuCfcQDY';
+    //         const subscription = await serviceWorker.pushManager.subscribe({
+    //           userVisibleOnly: true,
+    //           applicationServerKey: publicKey,
+    //         })
+    //         // if (!subscription){
+    //         // }
+
+    //         console.log(subscription)
+
+    //         await api.put(`/user/${user}/notification-config`, { notification: subscription })
+    //       })
+    // }
 
     async function handleLogin(data: NewLoginFormData) {
         if(loading) {
@@ -81,9 +81,9 @@ export function Login() {
         try {
             const reponse = await api.post('/auth', data)
             login(reponse.data.token, reponse.data.permission)
-            // await configureNotification(data.user)
             console.log({data: "run onesignal with", user: data.user, token: reponse.data.token})
-            await configureNotification(data.user, reponse.data.token)
+            await runOneSignal(data.user, reponse.data.token)
+            // await configureNotification(data.user, reponse.data.token)
             reset()
             navigate('/')
             setLoading(false)
