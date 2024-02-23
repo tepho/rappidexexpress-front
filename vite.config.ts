@@ -1,4 +1,4 @@
-import path from 'path';
+// import path from 'path';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa';
@@ -43,17 +43,17 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: manifest,
       manifestFilename: 'manifest.webmanifest',
-      injectRegister: false,
-      srcDir: path.resolve(__dirname, './dist'),
-      filename: 'service-worker.js',
-      strategies: 'injectManifest',
+      // injectRegister: false,
+      // srcDir: path.resolve(__dirname, './dist'),
+      // filename: 'service-worker.js',
+      // strategies: 'injectManifest',
 
-      workbox: {
-        globDirectory: path.resolve(__dirname, 'public'),
-        globPatterns: [
-          '{build,images,sounds,icons}/**/*.{js,css,html,ico,png,jpg,mp4,svg}'
-        ],
-      },
+      // workbox: {
+      //   globDirectory: path.resolve(__dirname, 'public'),
+      //   globPatterns: [
+      //     '{build,images,sounds,icons}/**/*.{js,css,html,ico,png,jpg,mp4,svg}'
+      //   ],
+      // },
     })
   ],
 })
