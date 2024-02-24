@@ -17,4 +17,6 @@ export interface Report {
     payment: string;
     status: string;
     value: string;
+    observation: string;
+    soda: string;
 }

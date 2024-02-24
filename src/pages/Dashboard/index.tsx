@@ -189,6 +189,7 @@ export function Dashboard() {
                                             <p>Forma de pagamento: {report.payment}</p>
                                             <p>Valor: R$ {report.value}</p>
                                             <p>Pix: {report.establishmentPix}</p>
+                                            <p>Refrigerante: {report.soda}</p>
                                         </ContainerOrder>
 
                                         <ContainerInfo>
