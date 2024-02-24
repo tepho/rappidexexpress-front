@@ -21,8 +21,8 @@ const DeliveryFormValidationSchema = zod.object({
     clientName: zod.string().min(3, 'Informe o nome do cliente.'),
     clientPhone: zod.string(),
     value: zod.string(),
+    observation: zod.string(),
   })
-
   
 type DeliveryFormData = zod.infer<typeof DeliveryFormValidationSchema>
 
@@ -40,6 +40,7 @@ export function NewDelivery(){
     const [establishmentId, setEstablishmentId] = useState('')
     const [motoboyId, setMotoboyId] = useState('')
     const [payment, setPayment] = useState('')
+    const [soda, setSoda] = useState('')
 
     const profileFormData = useForm<DeliveryFormData>({
         resolver: zodResolver(DeliveryFormValidationSchema),
@@ -47,6 +48,7 @@ export function NewDelivery(){
             clientName: '',
             clientPhone: '',
             value: '',
+            observation: '',
         },
     })
 
@@ -66,6 +68,8 @@ export function NewDelivery(){
                 establishmentId,
                 motoboyId,
                 payment,
+                soda,
+                observation,
             })
             reset()
             setLoading(false)
@@ -79,6 +83,7 @@ export function NewDelivery(){
     const clientName = watch('clientName')
     const clientPhone = watch('clientPhone')
     const value = watch('value')
+    const observation = watch('observation')
     const isSubmitDisabled = !clientName || !clientPhone || !establishmentId || !value || !payment || !establishmentId
 
     async function getData(){
@@ -131,17 +136,35 @@ export function NewDelivery(){
                         {...register('value')}
                     />
 
+                    {/* <label htmlFor="observation">Observação:</label>
+                    <BaseInput
+                        type="text"
+                        id="observation"
+                        placeholder="Algo relevante ao pedido."
+                        {...register('observation')}
+                    /> */}
+
                     <label htmlFor="payment">Tipo de pagamento:</label>
                     <select 
                         value={payment}
                         onChange={e => setPayment(e.target.value)}
                     >
                         <option value="">Selecione uma opção:</option>
-                        <option value="DÉBITO">Débito</option>
-                        <option value="CRÉDITO">Crédito</option>
                         <option value="PIX">Pix</option>
                         <option value="DINHEIRO">Dinheiro</option>
-                    </select>   
+                        <option value="CARTAO">Cartão</option>
+                        <option value="PAGO">Pago</option>
+                    </select>
+
+                    <label htmlFor="refrigerante">Tem refrigerante:</label>
+                    <select 
+                        value={soda}
+                        onChange={e => setSoda(e.target.value)}
+                    >
+                        <option value="">Selecione uma opção:</option>
+                        <option value="NÂO">Não</option>
+                        <option value="SIM">Sim</option>
+                    </select>
 
                     <label htmlFor="establishmentId">Qual o estabelecimento:</label>
                     <select 
