@@ -19,8 +19,8 @@ export enum StatusDelivery {
 }
 
 export enum PaymentType {
-  DEBITO = 'DÉBITO',
-  CREDITO = 'CRÉDITO',
+  CARTAO = 'CARTÃO',
+  PAGO = 'PAGO',
   PIX = 'PIX',
   DINHEIRO = 'DINHEIRO',
 }
