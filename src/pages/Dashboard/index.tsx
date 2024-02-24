@@ -121,6 +121,18 @@ export function Dashboard() {
         }
     }
 
+    function getButtonText(status: string) {
+        if (StatusDelivery.PENDING === status) {
+            return 'Atribuir'
+        } else if (StatusDelivery.ONCOURSE === status) {
+            return 'Coletar'
+        } else if (StatusDelivery.COLLECTED === status) {
+            return 'Finalizar'
+        } 
+
+        return 'Avançar'
+    }
+
     function formatPhoneNumber(phone: string){
         const number = `+55${phone}`
         const cleaned = ('' + number).replace(/\D/g, '');
@@ -219,7 +231,7 @@ export function Dashboard() {
                                         }
                                         {
                                             permission !== "shopkeeper" &&
-                                            <OrderButton typebutton={true} onClick={() => handlerNextStep(report)}>Avançar</OrderButton>
+                                            <OrderButton typebutton={true} onClick={() => handlerNextStep(report)}>{getButtonText(report.status)}</OrderButton>
                                         }
                                         {
                                             permission !== "motoboy" && report.status === "PENDENTE" &&
