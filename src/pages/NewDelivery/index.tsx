@@ -88,9 +88,12 @@ export function NewDelivery(){
 
     async function getData(){
         try {
-            const motoboysResponse = await api.get('/user/motoboys')
-            const shopkeepersResponse = await api.get('/user?type=shopkeeper')
+            let motoboysResponse = { data: [] }
+            if ( permission === 'admin' || permission === 'motoboy' ) {
+                motoboysResponse = await api.get('/user/motoboys')
+            }
 
+            const shopkeepersResponse = await api.get('/user?type=shopkeeper')
             setMotoboys(motoboysResponse.data)
             setShopkeepers(shopkeepersResponse.data.data)
             setLoadingInitial(false)
