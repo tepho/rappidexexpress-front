@@ -4,7 +4,7 @@ import { WhatsappLogo, MapPin } from 'phosphor-react'
 
 import { DeliveryContext } from "../../context/DeliveryContext";
 import api from "../../services/api";
-import { Report, User } from '../../shared/interfaces'
+import { Motoboy, Report } from '../../shared/interfaces'
 
 import { 
     BaseButton, 
@@ -50,8 +50,8 @@ export function Dashboard() {
             setReports(response.data.data)
 
             if (permission !== 'shopkeeper') {
-                const motoboysRes = await api.get('/user?type=motoboy')
-                setMotoboys(motoboysRes.data.data)
+                const motoboysRes = await api.get('/user/motoboys')
+                setMotoboys(motoboysRes.data)
             }
 
             setLoading(false)
@@ -218,7 +218,7 @@ export function Dashboard() {
                                             >
                                                 <option value="">Selecione o motoboy:</option>
                                                 {
-                                                    motoboys.map((motoboy: User) => 
+                                                    motoboys.map((motoboy: Motoboy) => 
                                                         <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
                                                     )
                                                 }

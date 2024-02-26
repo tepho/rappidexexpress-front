@@ -15,7 +15,7 @@ import {
     BaseInputMask,
 } from "./styles";
 import { Loader } from '../../components/Loader';
-import { User } from '../../shared/interfaces';
+import { Motoboy, User } from '../../shared/interfaces';
 
 const DeliveryFormValidationSchema = zod.object({
     clientName: zod.string().min(3, 'Informe o nome do cliente.'),
@@ -88,10 +88,10 @@ export function NewDelivery(){
 
     async function getData(){
         try {
-            const motoboysResponse = await api.get('/user?type=motoboy')
+            const motoboysResponse = await api.get('/user/motoboys')
             const shopkeepersResponse = await api.get('/user?type=shopkeeper')
 
-            setMotoboys(motoboysResponse.data.data)
+            setMotoboys(motoboysResponse.data)
             setShopkeepers(shopkeepersResponse.data.data)
             setLoadingInitial(false)
         } catch (error: any) {
@@ -189,7 +189,7 @@ export function NewDelivery(){
                                 >
                                     <option value="">Selecione uma opção:</option>
                                     {
-                                        motoboys.map((motoboy: User) => 
+                                        motoboys.map((motoboy: Motoboy) => 
                                             <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
                                         )
                                     }
