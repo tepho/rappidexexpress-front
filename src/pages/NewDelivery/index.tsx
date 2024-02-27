@@ -60,6 +60,12 @@ export function NewDelivery(){
         }
 
         setLoading(true)
+
+        if(data.clientPhone.includes('_')){
+            alert("Numero de telefone está faltando algum digito!")
+            setLoading(false)
+            return
+        }
         try {
             await api.post('/delivery', {
                 ...data,
