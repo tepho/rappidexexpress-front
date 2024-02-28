@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
+import OneSignal from 'react-onesignal';
 
 import { DeliveryContext } from '../../context/DeliveryContext';
 import api from '../../services/api';
@@ -16,6 +17,7 @@ import {
     ContainerProfileImage, 
     FormContainer, 
     ProfileImage,
+    NotificationButton,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 
@@ -40,6 +42,8 @@ export function Profile(){
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(true)
+    const [loadingNotification, setLoadingNotification] = useState(false)
+    const [username, setUsername] = useState('')
     const [profileImage, setProfileImage] = useState('')
     const [formValues, setFormValues] = useState({
         name: '',
@@ -58,6 +62,24 @@ export function Profile(){
         navigate('/alterar-senha')
     }
 
+    async function handleNotification() {
+        if(loadingNotification){
+            return
+        }
+
+        setLoadingNotification(true)
+
+        try {
+            await OneSignal.Slidedown.promptPush();
+            await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
+            setLoadingNotification(false)
+            alert('As notificações foram ativadas!')
+        } catch (error: any) {
+            alert(error.response.data.message)
+            setLoadingNotification(false)
+        }
+    }
+
     async function getMyData(){
         try {
             const response = await api.get('/user/myself')
@@ -68,6 +90,7 @@ export function Profile(){
                 profileImage: response.data.profileImage,
                 location: response.data.location,
             })
+            setUsername(response.data.user)
             setProfileImage(response.data.profileImage)
             setLoading(false)
         } catch (error: any) {
@@ -141,6 +164,12 @@ export function Profile(){
 
                         <ContainerButtons>
                             {/* <SaveButton disabled={isSubmitDisabled} type="submit">Salvar</SaveButton> */}
+                            <NotificationButton onClick={handleNotification}>
+                                {loadingNotification ?
+                                    <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                                    "Ativar Notificações"    
+                                }
+                            </NotificationButton>
                             <ChangePasswordButton onClick={changePassword}>Trocar de senha</ChangePasswordButton>
                         </ContainerButtons>
                     </FormContainer>
