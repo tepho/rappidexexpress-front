@@ -100,7 +100,8 @@ export function NewUser(){
                 user,
                 pix,
                 profileImage,
-                location
+                location,
+                type: selectedType,
             })
             setLoading(false)
             alert("Usuário editado com sucesso!")
@@ -128,6 +129,7 @@ export function NewUser(){
             userFinded = await api.get(`/user/${user}`)
             setFormValues(userFinded.data)
             setUserId(userFinded.data.id)
+            setSelectedType(userFinded.data.type)
         } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
