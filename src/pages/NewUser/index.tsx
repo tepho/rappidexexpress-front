@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
 
@@ -14,6 +14,7 @@ import {
     FormContainer,
     BaseButton,
     BaseInputMask,
+    DeleteButton,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 
@@ -33,6 +34,7 @@ type ProfileFormData = zod.infer<typeof ProfileFormValidationSchema>
 export function NewUser(){
     const { token } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
+    const navigate = useNavigate()
 
     const { user } = useParams();
 
@@ -48,6 +50,7 @@ export function NewUser(){
     })
 
     const [loading, setLoading] = useState(false)
+    const [loadingDelete, setLoadingDelete] = useState(false)
     const [selectedType, setSelectedType] = useState('')
     const profileFormData = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
@@ -105,6 +108,24 @@ export function NewUser(){
             })
             setLoading(false)
             alert("Usuário editado com sucesso!")
+        } catch (error: any) {
+            setLoading(false)
+            alert(error.response.data.message)
+        }
+    }
+
+    async function handleDelete(){
+        if(loadingDelete){
+            return
+        }
+
+        setLoadingDelete(true)
+
+        try {
+            await api.delete(`/user/${userId}`)
+            setLoadingDelete(false)
+            alert("Usuário apagado com sucesso!")
+            navigate('/')
         } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
@@ -228,10 +249,17 @@ export function NewUser(){
                                 user ? "Salvar" : "Criar novo usuário"
                             }
                         </BaseButton>
-                        
                     </ContainerButtons>
                 </FormContainer>
             </form>
+            {user && 
+                <DeleteButton onClick={handleDelete}>
+                    {loadingDelete ?
+                        <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                        "Apagar usuário"
+                    }
+                </DeleteButton>
+            }
         </Container>
     )
 }
