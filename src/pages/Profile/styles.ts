@@ -101,3 +101,8 @@ export const ChangePasswordButton = styled(BaseButton)`
   margin-top: 1rem;
   background: ${(props) => props.theme['yellow-500']};
 `;
+
+export const NotificationButton = styled(BaseButton)`
+  margin-top: 1rem;
+  background: ${(props) => props.theme['green-500']};
+`;
