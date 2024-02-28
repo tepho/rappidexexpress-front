@@ -105,3 +105,7 @@ export const BaseButton = styled.button`
   background: ${(props) => props.theme['green-700']};
   color: ${(props) => props.theme['gray-100']};
 `
+
+export const DeleteButton = styled(BaseButton)`
+  background: ${(props) => props.theme['red-500']};
+`
