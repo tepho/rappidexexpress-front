@@ -19,12 +19,14 @@ import {
 import api from "../../services/api";
 import { DeliveryContext } from "../../context/DeliveryContext";
 import { User, Report } from "../../shared/interfaces";
+import { Loader } from "../../components/Loader";
 
 export function Reports() {
     const { token } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
     
     const [loadingInitial, setLoadingInitial] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const [motoboys, setMotoboys] = useState([]);
     const [shopkeepers, setShopkeepers] = useState([]);
@@ -49,6 +51,12 @@ export function Reports() {
     }
 
     async function onClickSearch(){
+        if(loading){
+            return
+        }
+
+        setLoading(true)
+
         let param = '';
         if(selectedMotoboy){
             param = `${param}&motoboyId=${selectedMotoboy}`
@@ -67,8 +75,10 @@ export function Reports() {
             const response = await api.get(`/delivery?status=${selectedStatus}${param}`)
             setReports(response.data.data)
             setReportsAmount(response.data.count)
+            setLoading(false)
         } catch (error: any) {
             alert(error.response.data.message)
+            setLoading(false)
         }
     }
 
@@ -93,69 +103,77 @@ export function Reports() {
 
     return (
         <Container>
-            <FiltersContainer>
-                <h2>Filtros</h2>
-                <DataContainer>
-                    <form>
-                        <label htmlFor="birthday">De:</label>
-                        <input type="date" value={createdIn} onChange={e => setCreatedIn(e.target.value)} /> <br/>
-                    </form>
-                </DataContainer>
+            {loadingInitial ? 
+                <Loader size={40} biggestColor='gray' smallestColor='gray' /> :
+                <FiltersContainer>
+                    <h2>Filtros</h2>
+                    <DataContainer>
+                        <form>
+                            <label htmlFor="birthday">De:</label>
+                            <input type="date" value={createdIn} onChange={e => setCreatedIn(e.target.value)} /> <br/>
+                        </form>
+                    </DataContainer>
 
-                <DataContainer>
-                    <form>
-                        <label htmlFor="birthday">Até:</label>
-                        <input disabled={!createdIn} type="date" min={createdIn} value={createdUntil} onChange={e => setCreatedUntil(e.target.value)} />
-                    </form>
-                </DataContainer>
+                    <DataContainer>
+                        <form>
+                            <label htmlFor="birthday">Até:</label>
+                            <input disabled={!createdIn} type="date" min={createdIn} value={createdUntil} onChange={e => setCreatedUntil(e.target.value)} />
+                        </form>
+                    </DataContainer>
 
-                <Filter>
-                    <p>Status:</p>
-                    <select 
-                        value={selectedStatus}
-                        onChange={e => setSelectedStatus(e.target.value)}
-                    >
-                        <option value="PENDENTE">PENDENTE</option>
-                        <option value="ACAMINHO">A CAMINHO</option>
-                        <option value="COLETADO">COLETADO</option>
-                        <option value="FINALIZADO">FINALIZADO</option>
-                        <option value="CANCELADO">CANCELADO</option>
-                    </select>           
-                </Filter>
+                    <Filter>
+                        <p>Status:</p>
+                        <select 
+                            value={selectedStatus}
+                            onChange={e => setSelectedStatus(e.target.value)}
+                        >
+                            <option value="PENDENTE">PENDENTE</option>
+                            <option value="ACAMINHO">A CAMINHO</option>
+                            <option value="COLETADO">COLETADO</option>
+                            <option value="FINALIZADO">FINALIZADO</option>
+                            <option value="CANCELADO">CANCELADO</option>
+                        </select>           
+                    </Filter>
 
-                <Filter>
-                    <p>Motoboy:</p>
-                    <select 
-                        value={selectedMotoboy}
-                        onChange={e => setSelectedMotoboy(e.target.value)}
-                    >
-                        <option value=''>Todos</option>
-                        {
-                            motoboys.map((motoboy: User) => 
-                                <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
-                            )
-                        }
-                    </select>           
-                </Filter>
+                    <Filter>
+                        <p>Motoboy:</p>
+                        <select 
+                            value={selectedMotoboy}
+                            onChange={e => setSelectedMotoboy(e.target.value)}
+                        >
+                            <option value=''>Todos</option>
+                            {
+                                motoboys.map((motoboy: User) => 
+                                    <option key={motoboy.id} value={motoboy.id}>{motoboy.name}</option>
+                                )
+                            }
+                        </select>           
+                    </Filter>
 
-                <Filter>
-                    <p>Estabelecimento:</p>
-                    <select 
-                        value={selectedEstablishment}
-                        onChange={e => setSelectedEstablishment(e.target.value)}
-                    >
-                        <option value=''>Todos</option>
-                        {
-                            shopkeepers.map((shopkeeper: User) => 
-                                <option key={shopkeeper.id} value={shopkeeper.id}>{shopkeeper.name}</option>
-                            )
-                        }
-                    </select>           
-                </Filter>
+                    <Filter>
+                        <p>Estabelecimento:</p>
+                        <select 
+                            value={selectedEstablishment}
+                            onChange={e => setSelectedEstablishment(e.target.value)}
+                        >
+                            <option value=''>Todos</option>
+                            {
+                                shopkeepers.map((shopkeeper: User) => 
+                                    <option key={shopkeeper.id} value={shopkeeper.id}>{shopkeeper.name}</option>
+                                )
+                            }
+                        </select>           
+                    </Filter>
 
-                <SearchButton onClick={onClickSearch}>Buscar</SearchButton>
-            </FiltersContainer>
-
+                    <SearchButton onClick={onClickSearch}>
+                    {loading ?
+                        <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                        "Buscar"
+                    }
+                    </SearchButton>
+                </FiltersContainer>
+            }
+            {!loadingInitial &&
             <ReportsContainer>
                 <h3>Quantidade de entregas: {reportsAmount}</h3>
                 {reports.map((report: Report) => 
@@ -190,6 +208,7 @@ export function Reports() {
                 )}
 
             </ReportsContainer>
+            }
         </Container>
     )
 }
