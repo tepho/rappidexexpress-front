@@ -111,6 +111,18 @@ export function Dashboard() {
         }
     }
 
+    async function handlerCancel(report: Report) {
+        try {
+            await api.put(`/delivery/${report.id}`, {
+                'status': 'CANCELADO'
+            })
+            getData()
+            alert(`O pedido foi cancelado com sucesso.`)
+        } catch (error: any) {
+            alert(error.response.data.message)
+        }
+    }
+
     async function handlerDelete(report: Report) {
         try {
             await api.delete(`/delivery/${report.id}`)
@@ -228,7 +240,10 @@ export function Dashboard() {
                                     <OrderActions>
                                         {
                                             permission === "admin" && report.status === "ACAMINHO" &&
-                                            <OrderButton typebutton={true} onClick={() => handlerSave(report)}>Salvar</OrderButton>
+                                            <>
+                                                <OrderButton typebutton={true} onClick={() => handlerSave(report)}>Salvar</OrderButton>
+                                                <OrderButton typebutton={false} onClick={() => handlerCancel(report)}>Cancelar</OrderButton>
+                                            </>
                                         }
                                         {
                                             permission !== "shopkeeper" &&
