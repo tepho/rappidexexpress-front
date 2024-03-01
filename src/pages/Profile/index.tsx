@@ -108,7 +108,7 @@ export function Profile(){
         <Container>
             {loading ?
                 <Loader size={70} biggestColor='green' smallestColor='gray' /> :
-                <form action="">
+                <>
                     <ContainerProfileImage>
                         <ProfileImage src={profileImage}  />
                     </ContainerProfileImage>
@@ -173,7 +173,7 @@ export function Profile(){
                             <ChangePasswordButton onClick={changePassword}>Trocar de senha</ChangePasswordButton>
                         </ContainerButtons>
                     </FormContainer>
-                </form>
+                </>
             }
         </Container>
     )
