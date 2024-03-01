@@ -34,7 +34,7 @@ export function NewDelivery(){
     const [loadingInitial, setLoadingInitial] = useState(true);
     const [loading, setLoading] = useState(false)
     
-    const [shopkeepers, setShopkeepers] = useState([]);
+    const [shopkeepers, setShopkeepers] = useState<User[]>([]);
     const [motoboys, setMotoboys] = useState([]);
 
     const [establishmentId, setEstablishmentId] = useState('')
@@ -103,11 +103,18 @@ export function NewDelivery(){
             const shopkeepersResponse = await api.get('/user?type=shopkeeper')
             setMotoboys(motoboysResponse.data)
             setShopkeepers(shopkeepersResponse.data.data)
+
             setLoadingInitial(false)
         } catch (error: any) {
             alert(error.response.data.message)
         }
     }
+
+    useEffect(() => {
+        if(shopkeepers.length === 1){
+            setEstablishmentId(shopkeepers[0].id)
+        }
+    }, [shopkeepers])
 
     useEffect(() => {
         if(loadingInitial) {
