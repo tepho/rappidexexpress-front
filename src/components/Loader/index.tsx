@@ -1,5 +1,6 @@
 import { SpanLoader } from "./styles";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export enum Colors {
     'gray' = 'gray-100',
     'black' = 'gray-900',
