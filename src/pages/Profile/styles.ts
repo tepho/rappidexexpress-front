@@ -4,7 +4,8 @@ export const Container = styled.main`
   flex: 1;
   width: 100%;
   min-width: 17rem;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
@@ -24,6 +25,8 @@ export const Container = styled.main`
 export const ContainerProfileImage = styled.div`
   height: 12rem;
   width: 12rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   border-radius: 100%;
   border: solid;
   display: flex;
