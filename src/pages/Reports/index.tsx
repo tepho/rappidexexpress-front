@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from "react";
+import { DownloadSimple, PencilSimple  } from "phosphor-react";
 
 import { 
     Container, 
@@ -22,7 +23,6 @@ import api from "../../services/api";
 import { DeliveryContext } from "../../context/DeliveryContext";
 import { User, Report } from "../../shared/interfaces";
 import { Loader } from "../../components/Loader";
-import { PencilSimple  } from "phosphor-react";
 
 export function Reports() {
     const { token, permission } = useContext(DeliveryContext)
@@ -34,8 +34,11 @@ export function Reports() {
     const [motoboys, setMotoboys] = useState([]);
     const [shopkeepers, setShopkeepers] = useState([]);
 
-    const [reports, setReports] = useState([]);
-    const [reportsAmount, setReportsAmount] = useState(0);
+    const [reports, setReports] = useState<Report[]>([]);
+    const [reportsCount, setReportsCount] = useState(0);
+
+    const [loadingMoreReports, setLoadingMoreReports] = useState(false)
+    const [page, setPage] = useState(2);
 
     const [selectedStatus, setSelectedStatus] = useState('FINALIZADO');
     const [selectedMotoboy, setSelectedMotoboy] = useState('');
@@ -75,9 +78,10 @@ export function Reports() {
         }
 
         try {
-            const response = await api.get(`/delivery?status=${selectedStatus}${param}`)
+            const response = await api.get(`/delivery?status=${selectedStatus}&itemsPerPage=50${param}`)
             setReports(response.data.data)
-            setReportsAmount(response.data.count)
+            setPage(2)
+            setReportsCount(response.data.count)
             setLoading(false)
         } catch (error: any) {
             alert(error.response.data.message)
@@ -95,6 +99,38 @@ export function Reports() {
             setLoadingInitial(false)
         } catch (error: any) {
             alert(error.response.data.message)
+        }
+    }
+
+    async function moreReports(){
+        if(loadingMoreReports){
+            return
+        }
+
+        setLoadingMoreReports(true)
+
+        let param = '';
+        if(selectedMotoboy){
+            param = `${param}&motoboyId=${selectedMotoboy}`
+        }
+        if(selectedEstablishment){
+            param = `${param}&establishmentId=${selectedEstablishment}`
+        }
+        if(createdIn){
+            param = `${param}&createdIn=${createdIn}T00:00:00.000Z`
+        }
+        if(createdUntil){
+            param = `${param}&createdUntil=${createdUntil}T23:59:59.000Z`
+        }
+
+        try {
+            const response = await api.get(`/delivery?status=${selectedStatus}&page=${page}&itemsPerPage=50${param}`)
+            setReports([...reports, ...response.data.data])
+            setPage(page + 1)
+            setLoadingMoreReports(false)
+        } catch (error: any) {
+            alert(error.response.data.message)
+            setLoadingMoreReports(false)
         }
     }
 
@@ -178,7 +214,7 @@ export function Reports() {
             }
             {!loadingInitial &&
             <ReportsContainer>
-                <h3>Quantidade de entregas: {reportsAmount}</h3>
+                <h3>Quantidade de entregas: {reportsCount}</h3>
                 {reports.map((report: Report) => 
                     <Delivery key={report.id}>
                         <ContainerShopkeeper>
@@ -212,12 +248,21 @@ export function Reports() {
                             <EditContainer>
                                 <OnClickLink to='/editar-entrega' state={report}>
                                     Editar 
-                                    <PencilSimple  size={15} />
+                                    <PencilSimple size={15} />
                                 </OnClickLink>
                             </EditContainer>
                         }
                     </Delivery>
                 )}
+
+                {reports.length < reportsCount && 
+                    <EditContainer onClick={moreReports}>
+                        {loadingMoreReports ?
+                            <Loader size={15} biggestColor='gray' smallestColor='gray' /> :
+                            <OnClickLink to='#'>mais... <DownloadSimple size={15} /></OnClickLink>
+                        }
+                    </EditContainer>
+                }
 
             </ReportsContainer>
             }
