@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 
 export const Container = styled.main`
@@ -97,4 +98,15 @@ export const ContainerOrder = styled.div`
 
 export const ContainerInfo = styled.div`
   margin: 1rem;
+`;
+
+export const EditContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const OnClickLink = styled(Link)`
+  color: ${(props) => props.theme['gray-300']};
+  text-decoration: none;
 `;

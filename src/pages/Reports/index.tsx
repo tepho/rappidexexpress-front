@@ -14,15 +14,18 @@ import {
     ReportsContainer, 
     SearchButton, 
     ShopkeeperInfo, 
-    ShopkeeperProfileImage 
+    ShopkeeperProfileImage,
+    EditContainer,
+    OnClickLink,
 } from "./styles";
 import api from "../../services/api";
 import { DeliveryContext } from "../../context/DeliveryContext";
 import { User, Report } from "../../shared/interfaces";
 import { Loader } from "../../components/Loader";
+import { PencilSimple  } from "phosphor-react";
 
 export function Reports() {
-    const { token } = useContext(DeliveryContext)
+    const { token, permission } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
     
     const [loadingInitial, setLoadingInitial] = useState(true);
@@ -204,6 +207,15 @@ export function Reports() {
                             <p>Motoboy: {report.motoboyName} </p>
                             {formatNumber(`+55${report.motoboyPhone}`)}
                         </ContainerInfo>
+
+                        {permission === 'admin' && 
+                            <EditContainer>
+                                <OnClickLink to='/editar-entrega' state={report}>
+                                    Editar 
+                                    <PencilSimple  size={15} />
+                                </OnClickLink>
+                            </EditContainer>
+                        }
                     </Delivery>
                 )}
 
