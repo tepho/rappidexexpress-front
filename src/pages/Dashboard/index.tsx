@@ -37,7 +37,7 @@ export function Dashboard() {
     const [status, setStatus] = useState(`${StatusDelivery.PENDING}`);
     const [loading, setLoading] = useState(true);
     const [reports, setReports] = useState([]);
-    const [motoboys, setMotoboys] = useState([]);
+    const [motoboys, setMotoboys] = useState<Motoboy[]>([]);
 
     const [selectedMotoboy, setSelectedMotoboy] = useState('')
 
@@ -155,6 +155,12 @@ export function Dashboard() {
         }
         return '';
     }
+
+    useEffect(() => {
+        if(motoboys.length === 1) {
+            setSelectedMotoboy(motoboys[0].id)
+        }
+    }, [motoboys])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
