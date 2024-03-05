@@ -36,7 +36,7 @@ const ProfileFormValidationSchema = zod.object({
 type ProfileFormData = zod.infer<typeof ProfileFormValidationSchema>
 
 export function Profile(){
-    const { token } = useContext(DeliveryContext)
+    const { token, permission } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
 
     const navigate = useNavigate()
@@ -57,6 +57,10 @@ export function Profile(){
         resolver: zodResolver(ProfileFormValidationSchema),
         values: formValues,
     })
+
+    function handleConfig() {
+        navigate('/configuracao')
+    }
 
     function changePassword() {
         navigate('/alterar-senha')
@@ -170,6 +174,9 @@ export function Profile(){
                                     "Ativar Notificações"    
                                 }
                             </NotificationButton>
+                            {permission === 'admin' &&
+                                <NotificationButton onClick={handleConfig}>Configurações</NotificationButton>
+                            }
                             <ChangePasswordButton onClick={changePassword}>Trocar de senha</ChangePasswordButton>
                         </ContainerButtons>
                     </FormContainer>
