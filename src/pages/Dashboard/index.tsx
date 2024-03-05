@@ -199,7 +199,7 @@ export function Dashboard() {
                                     </ContainerShopkeeper>
 
                                     {status != StatusDelivery.PENDING &&
-                                    <>
+                                    
                                         <ContainerOrder>
                                             <ContainerStatus>
                                             <p>Status:</p><Status type={report.status}>{report.status}</Status>
@@ -209,22 +209,23 @@ export function Dashboard() {
                                             <p>Pix: {report.establishmentPix}</p>
                                             <p>Refrigerante: {report.soda}</p>
                                         </ContainerOrder>
-
+                                    }
                                         <ContainerInfo>
                                             <p>Cliente: {report.clientName} </p>
-                                            <Link href={getLinkToWhatsapp(report.clientPhone, messageTypes.client)} target="_blank" rel="noopener noreferrer">
-                                                {formatPhoneNumber(report.clientPhone)} <WhatsappLogo size={18} />
-                                            </Link>
+                                            {status != StatusDelivery.PENDING &&
+                                                <Link href={getLinkToWhatsapp(report.clientPhone, messageTypes.client)} target="_blank" rel="noopener noreferrer">
+                                                    {formatPhoneNumber(report.clientPhone)} <WhatsappLogo size={18} />
+                                                </Link>
+                                            }
                                         </ContainerInfo>
 
+                                    {status != StatusDelivery.PENDING &&
                                         <ContainerInfo>
                                             <p>Motoboy: {report.motoboyName} </p>
                                             <Link href={getLinkToWhatsapp(report.motoboyPhone, messageTypes.establishment)} target="_blank" rel="noopener noreferrer">
                                                 {formatPhoneNumber(report.motoboyPhone)} <WhatsappLogo size={18} />
                                             </Link>
                                         </ContainerInfo>
-
-                                    </>
                                     }
                                     {
                                         permission !== "shopkeeper" && 
