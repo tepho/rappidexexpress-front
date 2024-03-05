@@ -13,6 +13,7 @@ import { NewUser } from './pages/NewUser'
 import { ChangePassword } from './pages/ChangePassword'
 import { NewDelivery } from './pages/NewDelivery'
 import { EditDelivery } from './pages/EditDelivery'
+import { Config } from './pages/Config'
 
 export function Router() {
   const { token } = useContext(DeliveryContext)
@@ -29,6 +30,7 @@ export function Router() {
           <Route path="/alterar-senha" element={<ChangePassword />} />
           <Route path="/nova-entrega" element={<NewDelivery />} />
           <Route path="/editar-entrega" element={<EditDelivery />} />
+          <Route path="/configuracao" element={<Config />} />
         </Route>
       }
     </Routes>
