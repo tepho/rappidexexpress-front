@@ -3,10 +3,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa';
 
-const OneSignalConfig = {
-  appId: '2e8b634a-16bc-42a4-98b2-4f3701acf59a',
-};
-
 const manifest = {
   name: 'Rappidex Express',
   short_name: 'Rappidex Express',
@@ -60,7 +56,4 @@ export default defineConfig({
       // },
     }),
   ],
-  define: {
-    __VITE_PWA_ONE_SIGNAL__: JSON.stringify(OneSignalConfig),
-  },
 })
