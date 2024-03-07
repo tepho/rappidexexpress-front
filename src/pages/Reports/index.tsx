@@ -245,12 +245,24 @@ export function Reports() {
                         </ContainerInfo>
 
                         {permission === 'admin' && 
-                            <EditContainer>
-                                <OnClickLink to='/editar-entrega' state={report}>
-                                    Editar 
-                                    <PencilSimple size={15} />
-                                </OnClickLink>
-                            </EditContainer>
+                            <>
+                                <ContainerInfo>
+                                    <p>Atribuído em {report.pendingTime}</p>
+                                    {report.onCourseTime && 
+                                        <p>Coletado em {report.onCourseTime}</p>
+                                    }
+                                    {report.collectedTime && 
+                                    <p>Entregue em {report.collectedTime}</p>
+                                    }
+                                </ContainerInfo>
+
+                                <EditContainer>
+                                    <OnClickLink to='/editar-entrega' state={report}>
+                                        Editar 
+                                        <PencilSimple size={15} />
+                                    </OnClickLink>
+                                </EditContainer>
+                            </>
                         }
                     </Delivery>
                 )}
