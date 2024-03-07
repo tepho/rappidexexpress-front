@@ -41,12 +41,12 @@ export function Login() {
 
     async function runOneSignal(username: string, token: string){
         api.defaults.headers.Authorization = `Bearer ${token}`
-        console.log(OneSignal)
+        // console.log(OneSignal)
         // if(OneSignal && OneSignal?.User?.PushSubscription?.id){
         //     await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
         //     return
         // }
-        await OneSignal.Slidedown.promptPush();
+        // await OneSignal.Slidedown.promptPush();
         await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
     }
 

@@ -74,7 +74,7 @@ export function Profile(){
         setLoadingNotification(true)
 
         try {
-            await OneSignal.Slidedown.promptPush();
+            // await OneSignal.Slidedown.promptPush();
             await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
             setLoadingNotification(false)
             alert('As notificações foram ativadas!')
