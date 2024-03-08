@@ -19,7 +19,7 @@ export interface Report {
     value: string;
     observation: string;
     soda: string;
-    pendingTime: string;
-    onCourseTime: string;
-    collectedTime: string;
+    onCoursedAt: string;
+    collectedAt: string;
+    finishedAt: string;
 }
