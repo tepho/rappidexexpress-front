@@ -44,6 +44,7 @@ export function Dashboard() {
 
     const [isVisible, setIsVisible] = useState(false)
     const [observation, setObservation] = useState('')
+    const [reportSelectedToModal, setReportSelectedToModal] = useState('')
 
     function handleModal() {
         setIsVisible(!isVisible)
@@ -72,7 +73,8 @@ export function Dashboard() {
         let data;
         let newStatus;
 
-        if(report.status === StatusDelivery.COLLECTED && observation === ''){
+        if(report.status === StatusDelivery.COLLECTED && report.id != reportSelectedToModal){
+            setReportSelectedToModal(report.id)
             handleModal()
             return
         }
@@ -98,13 +100,14 @@ export function Dashboard() {
                 'status': newStatus,
                 'observation': observation === 'Sem observação.' ? '' : observation
             }
-            setObservation('')
         }
 
         try {
             await api.put(`/delivery/${report.id}`, data)
             getData()
             alert(`Solicitação avançada para o passo ${newStatus}`)
+            setObservation('')
+            setReportSelectedToModal('')
         } catch (error: any) {
             alert(error.response.data.message)
         }
@@ -148,13 +151,13 @@ export function Dashboard() {
         }
     }
 
-    function getButtonText(status: string) {
+    function getButtonText(status: string, id: string) {
         if (StatusDelivery.PENDING === status) {
             return 'Atribuir'
         } else if (StatusDelivery.ONCOURSE === status) {
             return 'Coletar'
         } else if (StatusDelivery.COLLECTED === status) {
-            if(observation === '') {
+            if(id != reportSelectedToModal) {
                 return 'Observação'
             }
             return 'Finalizar'
@@ -291,7 +294,7 @@ export function Dashboard() {
                                         }
                                         {
                                             permission !== "shopkeeper" &&
-                                            <OrderButton typebutton={true} onClick={() => handlerNextStep(report)}>{getButtonText(report.status)}</OrderButton>
+                                            <OrderButton typebutton={true} onClick={() => handlerNextStep(report)}>{getButtonText(report.status, report.id)}</OrderButton>
                                         }
                                         {
                                             permission !== "motoboy" && report.status === "PENDENTE" &&
