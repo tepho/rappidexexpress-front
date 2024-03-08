@@ -27,6 +27,7 @@ import {
     Status,
 } from "./styles";
 import { Loader } from '../../components/Loader';
+import { BaseModal } from "../../components/Modal";
 import { StatusDelivery } from "../../shared/constants/enums.constants";
 import { getLinkToWhatsapp, messageTypes } from "../../shared/constants/whatsapp.constants";
 
@@ -40,6 +41,13 @@ export function Dashboard() {
     const [motoboys, setMotoboys] = useState<Motoboy[]>([]);
 
     const [selectedMotoboy, setSelectedMotoboy] = useState('')
+
+    const [isVisible, setIsVisible] = useState(false)
+    const [observation, setObservation] = useState('')
+
+    function handleModal() {
+        setIsVisible(!isVisible)
+    }
 
     async function getData() {
         setLoading(true)
@@ -64,6 +72,11 @@ export function Dashboard() {
         let data;
         let newStatus;
 
+        if(report.status === StatusDelivery.COLLECTED && observation === ''){
+            handleModal()
+            return
+        }
+
         if(report.status === StatusDelivery.PENDING){
             if(!selectedMotoboy){
                 alert('Selecione o motoboy')
@@ -82,8 +95,10 @@ export function Dashboard() {
         } else if(report.status === StatusDelivery.COLLECTED){
             newStatus = StatusDelivery.FINISHED
             data = {
-                'status': newStatus
+                'status': newStatus,
+                'observation': observation === 'Sem observação.' ? '' : observation
             }
+            setObservation('')
         }
 
         try {
@@ -139,6 +154,9 @@ export function Dashboard() {
         } else if (StatusDelivery.ONCOURSE === status) {
             return 'Coletar'
         } else if (StatusDelivery.COLLECTED === status) {
+            if(observation === '') {
+                return 'Observação'
+            }
             return 'Finalizar'
         } 
 
@@ -170,6 +188,7 @@ export function Dashboard() {
 
     return (
         <Container>
+            <BaseModal isVisible={isVisible} handleClose={handleModal} setObservation={setObservation} />
             <ContainerButtons>
                     <BaseButton typeReport={status == StatusDelivery.PENDING} onClick={() => setStatus(StatusDelivery.PENDING)}>Livres</BaseButton>
                     <BaseButton typeReport={status != StatusDelivery.PENDING} onClick={() => setStatus(`${StatusDelivery.ONCOURSE},${StatusDelivery.COLLECTED}`)}>Atribuídos</BaseButton>
