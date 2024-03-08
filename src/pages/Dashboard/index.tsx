@@ -174,6 +174,10 @@ export function Dashboard() {
         return '';
     }
 
+    function getHours(date: string) {
+        return date.split('T')[1].substring(0, 5)
+    }
+
     useEffect(() => {
         if(motoboys.length === 1) {
             setSelectedMotoboy(motoboys[0].id)
@@ -246,6 +250,20 @@ export function Dashboard() {
                                             </Link>
                                         </ContainerInfo>
                                     }
+                                    <ContainerInfo>
+                                        {report.createdAt && 
+                                            <p>Criado: {getHours(report.createdAt)}</p>
+                                        }
+                                        {report.onCoursedAt && 
+                                            <p>Atribuído: {getHours(report.onCoursedAt)}</p>
+                                        }
+                                        {report.collectedAt && 
+                                            <p>Coletado: {getHours(report.collectedAt)}</p>
+                                        }
+                                        {report.finishedAt && 
+                                            <p>Finalizado: {getHours(report.finishedAt)}</p>
+                                        }
+                                    </ContainerInfo>
                                     {
                                         permission !== "shopkeeper" && 
                                         <SelectContainer>
