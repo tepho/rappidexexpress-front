@@ -134,6 +134,15 @@ export function Reports() {
         }
     }
 
+    function getDate(date: string) {
+        const dateArray = date.split('T')[0].split('-');
+        return `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`
+    }
+
+    function getHours(date: string) {
+        return date.split('T')[1].substring(0, 5)
+    }
+
     useEffect(() => {
         if(loadingInitial) {
             getData()
@@ -232,6 +241,9 @@ export function Reports() {
                             <p>Valor: R$ {report.value}</p>
                             <p>Pix: {report.establishmentPix}</p>
                             <p>Refrigerante: {report.soda}</p>
+                            {report.observation && 
+                                <p><b>Observação: {report.observation}</b></p>
+                            }
                         </ContainerOrder>
 
                         <ContainerInfo>
@@ -244,25 +256,29 @@ export function Reports() {
                             {formatNumber(`+55${report.motoboyPhone}`)}
                         </ContainerInfo>
 
-                        {permission === 'admin' && 
-                            <>
-                                <ContainerInfo>
-                                    <p>Atribuído em {report.pendingTime}</p>
-                                    {report.onCourseTime && 
-                                        <p>Coletado em {report.onCourseTime}</p>
-                                    }
-                                    {report.collectedTime && 
-                                    <p>Entregue em {report.collectedTime}</p>
-                                    }
-                                </ContainerInfo>
+                        <ContainerInfo>
+                            <p>Criado em {getDate(report.createdAt)} as {getHours(report.createdAt)}</p>
+                        </ContainerInfo>
 
-                                <EditContainer>
-                                    <OnClickLink to='/editar-entrega' state={report}>
-                                        Editar 
-                                        <PencilSimple size={15} />
-                                    </OnClickLink>
-                                </EditContainer>
-                            </>
+                        <ContainerInfo>
+                            {report.onCoursedAt && 
+                                <p>Atribuído: {getHours(report.onCoursedAt)}</p>
+                            }
+                            {report.collectedAt && 
+                                <p>Coletado: {getHours(report.collectedAt)}</p>
+                            }
+                            {report.finishedAt && 
+                                <p>Finalizado: {getHours(report.finishedAt)}</p>
+                            }
+                        </ContainerInfo>
+
+                        {permission === 'admin' && 
+                            <EditContainer>
+                                <OnClickLink to='/editar-entrega' state={report}>
+                                    Editar 
+                                    <PencilSimple size={15} />
+                                </OnClickLink>
+                            </EditContainer>
                         }
                     </Delivery>
                 )}
