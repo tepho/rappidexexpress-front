@@ -81,3 +81,26 @@ export const BaseButton = styled.button`
   background: ${(props) => props.theme['green-700']};
   color: ${(props) => props.theme['gray-100']};
 `
+
+interface BlockDeliveriesButtonProps {
+  type: boolean
+}
+
+export const BlockDeliveriesButton = styled.button<BlockDeliveriesButtonProps>`
+  width: 100%;
+  border: 0;
+  padding: 1rem;
+  margin: 0rem 0rem 1rem 0rem;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+
+  background: ${(props) => props.type ? props.theme['green-700'] : props.theme['red-500']};
+  color: ${(props) => props.theme['gray-100']};
+`
