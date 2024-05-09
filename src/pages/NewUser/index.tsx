@@ -15,6 +15,7 @@ import {
     BaseButton,
     BaseInputMask,
     DeleteButton,
+    ResetPassButton,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 
@@ -51,6 +52,7 @@ export function NewUser(){
 
     const [loading, setLoading] = useState(false)
     const [loadingDelete, setLoadingDelete] = useState(false)
+    const [loadingResetPass, setLoadingResetPass] = useState(false)
     const [selectedType, setSelectedType] = useState('')
     const profileFormData = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
@@ -132,6 +134,23 @@ export function NewUser(){
         }
     }
 
+    async function handleReset(){
+        if(loadingResetPass){
+            return
+        }
+
+        setLoadingResetPass(true)
+
+        try {
+            await api.put(`/user/${userId}/reset-password`)
+            setLoadingResetPass(false)
+            alert("Senha resetada com sucesso!")
+        } catch (error: any) {
+            setLoading(false)
+            alert(error.response.data.message)
+        }
+    }
+
     async function submitForm(data: ProfileFormData) {
         if(user){
             handleSave(data)
@@ -199,13 +218,17 @@ export function NewUser(){
                         {...register('user')}
                     />
 
-                    <label htmlFor="password">Senha:</label>
-                    <BaseInput
-                        type="password"
-                        id="password"
-                        placeholder="Informe a senha."
-                        {...register('password')}
-                    />
+                    {!user && 
+                        <>
+                            <label htmlFor="password">Senha:</label>
+                            <BaseInput
+                                type="password"
+                                id="password"
+                                placeholder="Informe a senha."
+                                {...register('password')}
+                            />
+                        </>
+                    }
 
                     <label htmlFor="pix">Pix:</label>
                     <BaseInput
@@ -253,12 +276,21 @@ export function NewUser(){
                 </FormContainer>
             </form>
             {user && 
-                <DeleteButton onClick={handleDelete}>
-                    {loadingDelete ?
-                        <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
-                        "Apagar usuário"
-                    }
-                </DeleteButton>
+                <>
+                    <ResetPassButton onClick={handleReset}>
+                        {loadingResetPass ?
+                            <Loader size={20} biggestColor='black' smallestColor='black' /> :
+                            "Resetar Senha"
+                        }
+                    </ResetPassButton>
+
+                    <DeleteButton onClick={handleDelete}>
+                        {loadingDelete ?
+                            <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                            "Apagar usuário"
+                        }
+                    </DeleteButton>
+                </>
             }
         </Container>
     )
