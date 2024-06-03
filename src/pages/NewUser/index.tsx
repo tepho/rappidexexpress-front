@@ -90,14 +90,14 @@ export function NewUser(){
         }
     }
 
-    async function handleSave(data: ProfileFormData){
+    async function handleSave(){
         if(loading){
             return
         }
 
         setLoading(true)
 
-        const { name, phone, user, pix, profileImage, location } = data;
+        const { name, phone, user, pix, profileImage, location } = watch();
         try {
             await api.put(`/user/${userId}`, {
                 name,
@@ -151,14 +151,6 @@ export function NewUser(){
         }
     }
 
-    async function submitForm(data: ProfileFormData) {
-        if(user){
-            handleSave(data)
-        } else {
-            handleCreate(data)
-        }
-    }
-
     function formatPhone(phone: string){
         return phone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '')
     }
@@ -181,7 +173,7 @@ export function NewUser(){
     const pix = watch('pix')
     const profileImage = watch('profileImage')
     // const location = watch('location')
-    const isSubmitDisabled = !name || !phone || !pix || !profileImage || phone.length < 11
+    const isSubmitDisabled = !name || !phone || !pix || !profileImage || phone.includes('_')
 
     useEffect(() => {
         getUserData()
@@ -189,7 +181,7 @@ export function NewUser(){
 
     return (
         <Container>
-            <form onSubmit={handleSubmit(submitForm)} action="">
+            <form onSubmit={handleSubmit(handleCreate)} action="">
 
                 <FormContainer>
                     
@@ -265,18 +257,29 @@ export function NewUser(){
                         <option value="admin">Admin</option>
                     </select>   
 
-                    <ContainerButtons>
-                        <BaseButton disabled={isSubmitDisabled} type="submit">
-                            {loading ?
-                                <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
-                                user ? "Salvar" : "Criar novo usuário"
-                            }
-                        </BaseButton>
-                    </ContainerButtons>
+                    {!user &&
+                        <ContainerButtons>
+                            <BaseButton disabled={isSubmitDisabled} type="submit">
+                                {loading ?
+                                    <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                                    "Criar novo usuário"
+                                }
+                            </BaseButton>
+                        </ContainerButtons>
+                    }
                 </FormContainer>
             </form>
             {user && 
                 <>
+                    {user && 
+                        <BaseButton disabled={isSubmitDisabled} onClick={handleSave}>
+                            {loading ?
+                                <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                                "Salvar"
+                            }
+                        </BaseButton>
+                    }
+                    
                     <ResetPassButton onClick={handleReset}>
                         {loadingResetPass ?
                             <Loader size={20} biggestColor='black' smallestColor='black' /> :

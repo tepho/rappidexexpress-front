@@ -19,6 +19,7 @@ export const Container = styled.main`
     align-items: center;
     justify-content: center;
     margin-top: 2rem;
+    margin-bottom: 1rem;
   }
 `
 
