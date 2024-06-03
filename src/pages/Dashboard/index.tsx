@@ -133,6 +133,11 @@ export function Dashboard() {
     }
 
     async function handlerCancel(report: Report) {
+        const confirmMessage = confirm('Você realmente deseja apagar essa entrega?');
+        if(!confirmMessage){
+            return
+        }
+
         try {
             await api.put(`/delivery/${report.id}`, {
                 'status': 'CANCELADO'
