@@ -161,3 +161,9 @@ interface StatusProps {
 export const Status = styled.p<StatusProps>`
   background-color: ${(props) => props.type === StatusDelivery.ONCOURSE ? 'blue' : 'green'};
 `;
+
+export const Flag = styled.p`
+  background-color: ${(props) => props.theme['green-700']};
+  width: 15px;
+  text-align: center;
+`

@@ -25,6 +25,7 @@ import {
     ContainerLoading,
     ContainerStatus,
     Status,
+    Flag,
 } from "./styles";
 import { Loader } from '../../components/Loader';
 import { BaseModal } from "../../components/Modal";
@@ -39,6 +40,7 @@ export function Dashboard() {
     const [loading, setLoading] = useState(true);
     const [reports, setReports] = useState([]);
     const [motoboys, setMotoboys] = useState<Motoboy[]>([]);
+    const [reportsCount, setReportsCount] = useState(0)
 
     const [selectedMotoboy, setSelectedMotoboy] = useState('')
 
@@ -57,6 +59,7 @@ export function Dashboard() {
         try {
             const response = await api.get(`/delivery?status=${status}`)
             setReports(response.data.data)
+            setReportsCount(response.data.count)
 
             if (permission !== 'shopkeeper') {
                 const motoboysRes = await api.get('/user/motoboys')
@@ -197,8 +200,22 @@ export function Dashboard() {
         <Container>
             <BaseModal isVisible={isVisible} handleClose={handleModal} setObservation={setObservation} />
             <ContainerButtons>
-                    <BaseButton typeReport={status == StatusDelivery.PENDING} onClick={() => setStatus(StatusDelivery.PENDING)}>Livres</BaseButton>
-                    <BaseButton typeReport={status != StatusDelivery.PENDING} onClick={() => setStatus(`${StatusDelivery.ONCOURSE},${StatusDelivery.COLLECTED}`)}>Atribuídos</BaseButton>
+                    <BaseButton typeReport={status == StatusDelivery.PENDING} onClick={() => setStatus(StatusDelivery.PENDING)}>
+                        Livres 
+                        {!loading && status == StatusDelivery.PENDING &&
+                            <Flag>
+                                {reportsCount}
+                            </Flag>
+                        }
+                    </BaseButton>
+                    <BaseButton typeReport={status != StatusDelivery.PENDING} onClick={() => setStatus(`${StatusDelivery.ONCOURSE},${StatusDelivery.COLLECTED}`)}>
+                        Atribuídos 
+                        {!loading && status != StatusDelivery.PENDING &&
+                            <Flag>
+                                {reportsCount}
+                            </Flag>
+                        }
+                    </BaseButton>
             </ContainerButtons>
             <ContainerDeliveries>
                 {
