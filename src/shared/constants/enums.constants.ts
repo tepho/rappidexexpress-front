@@ -2,6 +2,7 @@ export enum UserType {
   SHOPKEEPER = 'shopkeeper',
   MOTOBOY = 'motoboy',
   ADMIN = 'admin',
+  SHOPKEEPERADMIN = 'shopkeeperadmin',
 }
 
 export enum Permissions {
