@@ -96,7 +96,7 @@ export function NewDelivery(){
     async function getData(){
         try {
             let motoboysResponse = { data: [] }
-            if ( permission === 'admin' || permission === 'motoboy' ) {
+            if ( permission === 'admin' || permission === 'motoboy' || permission === 'shopkeeperadmin' ) {
                 motoboysResponse = await api.get('/user/motoboys')
             }
 
@@ -197,7 +197,7 @@ export function NewDelivery(){
                     </select>   
 
                     {
-                        permission === 'admin' && (
+                        (permission === 'admin' || permission === 'shopkeeperadmin') && (
                             <>
                                 <label htmlFor="motoboyId">Qual o motoboy:</label>
                                 <select 
