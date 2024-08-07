@@ -248,7 +248,7 @@ export function Reports() {
 
                         <ContainerInfo>
                             <p>Cliente: {report.clientName} </p>
-                                {formatNumber(`+55${report.clientPhone}`)}
+                                {/* {formatNumber(`+55${report.clientPhone}`)} */}
                         </ContainerInfo>
 
                         <ContainerInfo>
