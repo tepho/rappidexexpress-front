@@ -23,7 +23,7 @@ export function Header() {
             <UserPlus  size={24} />
           </NavLink>
         }
-        {(permission === 'admin' || permission === 'shopkeeper') && 
+        {(permission === 'admin' || permission === 'shopkeeper' || permission === 'shopkeeperadmin') && 
           <NavLink to="/nova-entrega" title="Nova entrega">
             <FilePlus  size={24} />
           </NavLink>
