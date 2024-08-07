@@ -253,6 +253,7 @@ export function NewUser(){
                     >
                         <option value="">Selecione uma opção:</option>
                         <option value="shopkeeper">Lojista</option>
+                        <option value="shopkeeperadmin">Lojista Admin</option>
                         <option value="motoboy">Motoboy</option>
                         <option value="admin">Admin</option>
                     </select>   
