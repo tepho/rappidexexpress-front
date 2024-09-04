@@ -62,6 +62,10 @@ export function Profile(){
         navigate('/configuracao')
     }
 
+    function handleUsers() {
+        navigate('/usuarios')
+    }
+
     function changePassword() {
         navigate('/alterar-senha')
     }
@@ -169,14 +173,17 @@ export function Profile(){
 
                         <ContainerButtons>
                             {/* <SaveButton disabled={isSubmitDisabled} type="submit">Salvar</SaveButton> */}
-                            <NotificationButton onClick={handleNotification}>
+                            <NotificationButton onClick={handleNotification} backgroundColor={'green-500'}>
                                 {loadingNotification ?
                                     <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
                                     "Ativar Notificações"    
                                 }
                             </NotificationButton>
                             {permission === 'admin' &&
-                                <NotificationButton onClick={handleConfig}>Configurações</NotificationButton>
+                                <>
+                                    <NotificationButton onClick={handleConfig} backgroundColor={'gray-400'}>Configurações</NotificationButton>
+                                    <NotificationButton onClick={handleUsers} backgroundColor={'gray-400'}>Usuários</NotificationButton>
+                                </>
                             }
                             <ChangePasswordButton onClick={changePassword}>Trocar de senha</ChangePasswordButton>
                         </ContainerButtons>
