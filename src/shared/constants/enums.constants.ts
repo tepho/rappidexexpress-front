@@ -3,12 +3,14 @@ export enum UserType {
   MOTOBOY = 'motoboy',
   ADMIN = 'admin',
   SHOPKEEPERADMIN = 'shopkeeperadmin',
+  SUPERADMIN = 'superadmin',
 }
 
 export enum Permissions {
   MASTER = 'master',
   ADMIN = 'admin',
   USER = 'none',
+  SUPERADMIN = 'superadmin',
 }
 
 export enum StatusDelivery {

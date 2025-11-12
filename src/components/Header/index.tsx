@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Hamburger, Scroll, User, SignOut, FilePlus, UserPlus } from 'phosphor-react'
+import { Hamburger, Scroll, User, SignOut, FilePlus, UserPlus, MapPin } from 'phosphor-react'
 
 import { HeaderContainer, RappidexLogo } from './styles'
 import { DeliveryContext } from '../../context/DeliveryContext'
@@ -18,12 +18,17 @@ export function Header() {
         <RappidexLogo src="https://i.pinimg.com/736x/a5/9f/17/a59f176343c6fd0d83adea72eaf0c57f.jpg" />
       </NavLink>
       <nav>
-        {permission === 'admin' && 
+        {(permission === 'admin' || permission === 'superadmin') && 
           <NavLink to="/novo-usuario" title="Novo Usuário">
             <UserPlus  size={24} />
           </NavLink>
         }
-        {(permission === 'admin' || permission === 'shopkeeper' || permission === 'shopkeeperadmin') && 
+        {permission === 'superadmin' &&
+          <NavLink to="/cidades" title="Cidades">
+            <MapPin size={24} />
+          </NavLink>
+        }
+        {(permission === 'admin' || permission === 'superadmin' || permission === 'shopkeeper' || permission === 'shopkeeperadmin') && 
           <NavLink to="/nova-entrega" title="Nova entrega">
             <FilePlus  size={24} />
           </NavLink>

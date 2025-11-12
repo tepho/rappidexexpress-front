@@ -45,6 +45,7 @@ export function Profile(){
     const [loadingNotification, setLoadingNotification] = useState(false)
     const [username, setUsername] = useState('')
     const [profileImage, setProfileImage] = useState('')
+    const [cityDisplay, setCityDisplay] = useState('')
     const [formValues, setFormValues] = useState({
         name: '',
         phone: '',
@@ -52,6 +53,7 @@ export function Profile(){
         profileImage: '',
         location: ''
     })
+    const [cityId, setCityId] = useState('')
 
     const { register } = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
@@ -101,17 +103,59 @@ export function Profile(){
             })
             setUsername(response.data.user)
             setProfileImage(response.data.profileImage)
+            const userCityId = response.data?.cityId
+                ?? response.data?.city?.id
+                ?? response.data?.city?.cityId
+                ?? ''
+            const normalizedCityId = userCityId ? String(userCityId) : ''
+            setCityId(normalizedCityId)
+
+            const userCityName = response.data?.city?.name ?? response.data?.cityName ?? ''
+            const userCityState = response.data?.city?.state ?? response.data?.cityState ?? ''
+            const formattedCity = userCityName
+                ? userCityState ? `${userCityName} - ${userCityState}` : userCityName
+                : ''
+            setCityDisplay(formattedCity)
             setLoading(false)
         } catch (error: any) {
             alert(error.response.data.message)
         }
     }
 
+    async function resolveCityDisplay(cityIdValue: string) {
+        if (!cityIdValue || cityDisplay) {
+            return
+        }
+
+        try {
+            const response = await api.get('/city')
+            const citiesData = Array.isArray(response.data?.data)
+                ? response.data.data
+                : Array.isArray(response.data)
+                ? response.data
+                : []
+            const matchedCity = citiesData.find((city: any) => String(city.id) === cityIdValue)
+            if (matchedCity) {
+                const cityState = matchedCity.state ? ` - ${matchedCity.state}` : ''
+                setCityDisplay(`${matchedCity.name}${cityState}`)
+            }
+        } catch (error: any) {
+            alert(error.response?.data?.message ?? 'Não foi possível carregar a cidade vinculada.')
+        }
+    }
+
     useEffect(() => {
-        if(loading){
+        if (loading) {
             getMyData()
         }
     })
+
+    useEffect(() => {
+        if (!cityDisplay && cityId) {
+            resolveCityDisplay(cityId)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cityDisplay, cityId])
 
     return (
         <Container>
@@ -171,6 +215,16 @@ export function Profile(){
                             {...register('location')}
                         />
 
+                        <label htmlFor="city">Cidade:</label>
+                        <BaseInput
+                            id="city"
+                            type="text"
+                            value={cityDisplay}
+                            placeholder="Cidade não vinculada"
+                            readOnly
+                            disabled
+                        />
+
                         <ContainerButtons>
                             {/* <SaveButton disabled={isSubmitDisabled} type="submit">Salvar</SaveButton> */}
                             <NotificationButton onClick={handleNotification} backgroundColor={'green-500'}>
@@ -179,7 +233,7 @@ export function Profile(){
                                     "Ativar Notificações"    
                                 }
                             </NotificationButton>
-                            {permission === 'admin' &&
+                            {( permission === 'admin' || permission === 'superadmin') &&
                                 <>
                                     <NotificationButton onClick={handleConfig} backgroundColor={'gray-400'}>Configurações</NotificationButton>
                                     <NotificationButton onClick={handleUsers} backgroundColor={'gray-400'}>Usuários</NotificationButton>

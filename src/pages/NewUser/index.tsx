@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 
 import { DeliveryContext } from '../../context/DeliveryContext';
 import api from '../../services/api';
+import { City } from '../../shared/interfaces';
 import { 
     BaseInput,
     Container,
@@ -33,7 +34,7 @@ const ProfileFormValidationSchema = zod.object({
 type ProfileFormData = zod.infer<typeof ProfileFormValidationSchema>
 
 export function NewUser(){
-    const { token } = useContext(DeliveryContext)
+    const { token, permission } = useContext(DeliveryContext)
     api.defaults.headers.Authorization = `Bearer ${token}`
     const navigate = useNavigate()
 
@@ -54,12 +55,18 @@ export function NewUser(){
     const [loadingDelete, setLoadingDelete] = useState(false)
     const [loadingResetPass, setLoadingResetPass] = useState(false)
     const [selectedType, setSelectedType] = useState('')
+    const [cities, setCities] = useState<City[]>([])
+    const [citiesLoading, setCitiesLoading] = useState(false)
+    const [selectedCityId, setSelectedCityId] = useState('')
+    const [loggedUserCityId, setLoggedUserCityId] = useState('')
     const profileFormData = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
         values: formValues,
     })
 
     const { handleSubmit, watch, register, reset } = profileFormData
+
+    const allowCitySelection = permission === 'superadmin'
 
     async function handleCreate(data: ProfileFormData) {
         if(loading){
@@ -74,12 +81,21 @@ export function NewUser(){
             return
         }
 
+        const cityIdToSubmit = allowCitySelection ? selectedCityId : loggedUserCityId
+
+        if (!cityIdToSubmit) {
+            alert('Não foi possível identificar a cidade para vincular ao usuário.')
+            setLoading(false)
+            return
+        }
+
         try {
             await api.post('/user', {
                 ...data,
                 phone: formatPhone(data.phone),
                 type: selectedType,
-                permission: selectedType === 'admin' ? selectedType : 'none',
+                permission: (selectedType === 'admin'|| selectedType === 'superadmin') ? selectedType : 'none',
+                cityId: cityIdToSubmit,
             })
             reset()
             setLoading(false)
@@ -98,6 +114,13 @@ export function NewUser(){
         setLoading(true)
 
         const { name, phone, user, pix, profileImage, location } = watch();
+        const cityIdToSubmit = allowCitySelection ? selectedCityId : loggedUserCityId
+
+        if (!cityIdToSubmit) {
+            alert('Não foi possível identificar a cidade para vincular ao usuário.')
+            setLoading(false)
+            return
+        }
         try {
             await api.put(`/user/${userId}`, {
                 name,
@@ -107,6 +130,7 @@ export function NewUser(){
                 profileImage,
                 location,
                 type: selectedType,
+                cityId: cityIdToSubmit,
             })
             setLoading(false)
             alert("Usuário editado com sucesso!")
@@ -155,6 +179,46 @@ export function NewUser(){
         return phone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '')
     }
 
+    async function fetchCities() {
+        if (!allowCitySelection) {
+            setCities([])
+            return
+        }
+
+        setCitiesLoading(true)
+        try {
+            const response = await api.get('/city')
+            const rawData = Array.isArray(response.data?.data)
+                ? response.data.data
+                : Array.isArray(response.data)
+                ? response.data
+                : []
+            setCities(rawData as City[])
+        } catch (error: any) {
+            alert(error.response?.data?.message ?? 'Não foi possível carregar as cidades.')
+        } finally {
+            setCitiesLoading(false)
+        }
+    }
+
+    async function fetchLoggedUserCity() {
+        try {
+            const response = await api.get('/user/myself')
+            const userCityId = response.data?.cityId
+                ?? response.data?.city?.id
+                ?? response.data?.city?.cityId
+                ?? ''
+            const normalizedCityId = userCityId ? String(userCityId) : ''
+            setLoggedUserCityId(normalizedCityId)
+
+            if (!allowCitySelection) {
+                setSelectedCityId(normalizedCityId)
+            }
+        } catch (error: any) {
+            alert(error.response?.data?.message ?? 'Não foi possível carregar a cidade do usuário logado.')
+        }
+    }
+
     async function getUserData(){
         let userFinded;
         try {
@@ -162,6 +226,15 @@ export function NewUser(){
             setFormValues(userFinded.data)
             setUserId(userFinded.data.id)
             setSelectedType(userFinded.data.type)
+            const cityIdFromUser = userFinded.data?.cityId
+                ?? userFinded.data?.city?.id
+                ?? userFinded.data?.city?.cityId
+                ?? ''
+            const normalizedCityIdFromUser = cityIdFromUser ? String(cityIdFromUser) : ''
+
+            if (allowCitySelection) {
+                setSelectedCityId(normalizedCityIdFromUser)
+            }
         } catch (error: any) {
             setLoading(false)
             alert(error.response.data.message)
@@ -173,10 +246,22 @@ export function NewUser(){
     const pix = watch('pix')
     const profileImage = watch('profileImage')
     // const location = watch('location')
-    const isSubmitDisabled = !name || !phone || !pix || !profileImage || phone.includes('_')
+    const citySelectionMissing = allowCitySelection ? !selectedCityId : !loggedUserCityId
+    const isSubmitDisabled = !name || !phone || !pix || !profileImage || phone.includes('_') || citySelectionMissing
 
     useEffect(() => {
-        getUserData()
+        fetchLoggedUserCity()
+        if (allowCitySelection) {
+            fetchCities()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allowCitySelection])
+
+    useEffect(() => {
+        if (user) {
+            getUserData()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
 
     return (
@@ -245,6 +330,25 @@ export function NewUser(){
                         placeholder="Informe o link da localização."
                         {...register('location')}
                     />
+
+                    {allowCitySelection && (
+                        <>
+                            <label htmlFor="cityId">Cidade:</label>
+                            <select
+                                id="cityId"
+                                value={selectedCityId}
+                                onChange={(event) => setSelectedCityId(event.target.value)}
+                                disabled={citiesLoading}
+                            >
+                                <option value="">Selecione a cidade</option>
+                                {cities.map((city) => (
+                                    <option key={city.id ?? city.name} value={city.id ?? ''}>
+                                        {city.state ? `${city.name} - ${city.state}` : city.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </>
+                    )}
 
                     <label htmlFor="userType">Tipo de usuário:</label>
                     <select 

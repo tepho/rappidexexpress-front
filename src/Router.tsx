@@ -15,9 +15,10 @@ import { NewDelivery } from './pages/NewDelivery'
 import { EditDelivery } from './pages/EditDelivery'
 import { Config } from './pages/Config'
 import { Users } from './pages/Users'
+import { Cities } from './pages/Cities'
 
 export function Router() {
-  const { token } = useContext(DeliveryContext)
+  const { token, permission } = useContext(DeliveryContext)
   return (
     <Routes>
       { 
@@ -33,6 +34,9 @@ export function Router() {
           <Route path="/editar-entrega" element={<EditDelivery />} />
           <Route path="/configuracao" element={<Config />} />
           <Route path="/usuarios" element={<Users />} />
+          {permission === 'superadmin' && (
+            <Route path="/cidades" element={<Cities />} />
+          )}
         </Route>
       }
     </Routes>

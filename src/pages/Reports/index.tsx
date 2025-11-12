@@ -272,7 +272,7 @@ export function Reports() {
                             }
                         </ContainerInfo>
 
-                        {permission === 'admin' && 
+                        {(permission === 'admin' || permission === 'superadmin') && 
                             <EditContainer>
                                 <OnClickLink to='/editar-entrega' state={report}>
                                     Editar 

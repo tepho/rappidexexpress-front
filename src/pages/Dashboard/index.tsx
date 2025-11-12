@@ -308,7 +308,7 @@ export function Dashboard() {
                                     }
                                     <OrderActions>
                                         {
-                                            permission === "admin" && report.status !== "PENDENTE" && 
+                                            (permission === "admin" || permission === "superadmin") && report.status !== "PENDENTE" && 
                                             <>
                                                 <OrderButton typebutton={true} onClick={() => handlerSave(report)}>Salvar</OrderButton>
                                                 <OrderButton typebutton={false} onClick={() => handlerCancel(report)}>Cancelar</OrderButton>
