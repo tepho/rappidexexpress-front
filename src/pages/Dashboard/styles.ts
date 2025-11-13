@@ -130,14 +130,18 @@ export const OrderButton = styled.div<OrderProps>`
 
 export const SelectContainer = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: center;
-  gap: 0.5rem;
-
+  gap: 0.25rem;
+  margin: 1rem;
   select {
     height: 2.5rem;
     background:  ${(props) => props.theme['gray-600']};
     color: ${(props) => props.theme['gray-100']};
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
   }
 `;
 
