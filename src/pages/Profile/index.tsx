@@ -4,12 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { useForm } from 'react-hook-form'
-import {
-    disablePush,
-    enablePushAndGetSubscriptionId,
-    isOneSignalEnabled,
-    isPushOptedIn,
-} from '../../services/onesignal';
+import OneSignal from 'react-onesignal';
 
 import { DeliveryContext } from '../../context/DeliveryContext';
 import api from '../../services/api';
@@ -35,10 +30,10 @@ const ProfileFormValidationSchema = zod.object({
     pix: zod.string(),
     profileImage: zod.string(),
     location: zod.string()
-})
+  })
 
+  
 type ProfileFormData = zod.infer<typeof ProfileFormValidationSchema>
-
 
 export function Profile(){
     const { token, permission } = useContext(DeliveryContext)
@@ -47,13 +42,10 @@ export function Profile(){
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(true)
-    const [loadingEnableNotification, setLoadingEnableNotification] = useState(false)
-    const [loadingDisableNotification, setLoadingDisableNotification] = useState(false)
+    const [loadingNotification, setLoadingNotification] = useState(false)
     const [username, setUsername] = useState('')
     const [profileImage, setProfileImage] = useState('')
     const [cityDisplay, setCityDisplay] = useState('')
-    const [cityId, setCityId] = useState('')
-    const [isPushEnabled, setIsPushEnabled] = useState(false)
     const [formValues, setFormValues] = useState({
         name: '',
         phone: '',
@@ -61,7 +53,8 @@ export function Profile(){
         profileImage: '',
         location: ''
     })
-    
+    const [cityId, setCityId] = useState('')
+
     const { register } = useForm<ProfileFormData>({
         resolver: zodResolver(ProfileFormValidationSchema),
         values: formValues,
@@ -79,84 +72,28 @@ export function Profile(){
         navigate('/alterar-senha')
     }
 
-    async function syncPushStatus() {
-        if (!isOneSignalEnabled) {
-            setIsPushEnabled(false)
+    async function handleNotification() {
+        if(loadingNotification){
             return
         }
 
+        setLoadingNotification(true)
+
+        await OneSignal.Slidedown.promptPush();
+
         try {
-            const optedIn = await isPushOptedIn()
-            setIsPushEnabled(optedIn)
-        } catch {
-            setIsPushEnabled(false)
+            await api.put(`/user/${username}/notification-config`, { notification: { subscriptionId: OneSignal.User.PushSubscription.id } })
+            setLoadingNotification(false)
+            alert('As notificações foram ativadas!')
+        } catch (error: any) {
+            alert(error.response.data.message)
+            setLoadingNotification(false)
         }
     }
-
-    async function handleEnableNotification() {
-    if (loadingEnableNotification || loadingDisableNotification) {
-        return
-    }
-
-    if (!isOneSignalEnabled) {
-        alert('As notificações estão desativadas no ambiente local.')
-        return
-    }
-
-    setLoadingEnableNotification(true)
-
-    try {
-        const subscriptionId = await enablePushAndGetSubscriptionId()
-
-        if (!subscriptionId) {
-            throw new Error('Não foi possível obter o subscriptionId do OneSignal.')
-        }
-
-        await api.put(`/user/${username}/notification-config`, {
-            notification: { subscriptionId }
-        })
-
-        setIsPushEnabled(true)
-        alert('As notificações foram ativadas!')
-    } catch (error: any) {
-        alert(error.response?.data?.message ?? error.message ?? 'Erro ao ativar notificações.')
-    } finally {
-        setLoadingEnableNotification(false)
-    }
-}
-
-    async function handleDisableNotification() {
-    if (loadingEnableNotification || loadingDisableNotification) {
-        return
-    }
-
-    if (!isOneSignalEnabled) {
-        alert('As notificações estão desativadas no ambiente local.')
-        return
-    }
-
-    setLoadingDisableNotification(true)
-
-    try {
-        await disablePush()
-
-        await api.put(`/user/${username}/notification-config`, {
-            notification: { subscriptionId: '' }
-        })
-
-        setIsPushEnabled(false)
-        alert('As notificações foram desativadas!')
-    } catch (error: any) {
-        alert(error.response?.data?.message ?? error.message ?? 'Erro ao desativar notificações.')
-    } finally {
-        setLoadingDisableNotification(false)
-    }
-}
 
     async function getMyData(){
         try {
             const response = await api.get('/user/myself')
-
             setFormValues({
                 name: response.data.name,
                 phone: response.data.phone,
@@ -164,15 +101,12 @@ export function Profile(){
                 profileImage: response.data.profileImage,
                 location: response.data.location,
             })
-
             setUsername(response.data.user)
             setProfileImage(response.data.profileImage)
-
             const userCityId = response.data?.cityId
                 ?? response.data?.city?.id
                 ?? response.data?.city?.cityId
                 ?? ''
-
             const normalizedCityId = userCityId ? String(userCityId) : ''
             setCityId(normalizedCityId)
 
@@ -181,12 +115,10 @@ export function Profile(){
             const formattedCity = userCityName
                 ? userCityState ? `${userCityName} - ${userCityState}` : userCityName
                 : ''
-
             setCityDisplay(formattedCity)
-        } catch (error: any) {
-            alert(error.response?.data?.message ?? 'Erro ao carregar os dados do perfil.')
-        } finally {
             setLoading(false)
+        } catch (error: any) {
+            alert(error.response.data.message)
         }
     }
 
@@ -202,9 +134,7 @@ export function Profile(){
                 : Array.isArray(response.data)
                 ? response.data
                 : []
-
             const matchedCity = citiesData.find((city: any) => String(city.id) === cityIdValue)
-
             if (matchedCity) {
                 const cityState = matchedCity.state ? ` - ${matchedCity.state}` : ''
                 setCityDisplay(`${matchedCity.name}${cityState}`)
@@ -215,12 +145,10 @@ export function Profile(){
     }
 
     useEffect(() => {
-        getMyData()
-    }, [])
-
-    useEffect(() => {
-        syncPushStatus()
-    }, [])
+        if (loading) {
+            getMyData()
+        }
+    })
 
     useEffect(() => {
         if (!cityDisplay && cityId) {
@@ -235,10 +163,11 @@ export function Profile(){
                 <Loader size={70} biggestColor='green' smallestColor='gray' /> :
                 <>
                     <ContainerProfileImage>
-                        <ProfileImage src={profileImage} />
+                        <ProfileImage src={profileImage}  />
                     </ContainerProfileImage>
 
                     <FormContainer>
+                        
                         <label htmlFor="name">Nome:</label>
                         <BaseInput
                             type="text"
@@ -297,57 +226,20 @@ export function Profile(){
                         />
 
                         <ContainerButtons>
-                            <NotificationButton
-                                type="button"
-                                onClick={handleEnableNotification}
-                                backgroundColor={'green-500'}
-                                disabled={loadingEnableNotification || loadingDisableNotification || isPushEnabled}
-                            >
-                                {loadingEnableNotification ? (
-                                    <Loader size={20} biggestColor='gray' smallestColor='gray' />
-                                ) : isPushEnabled ? (
-                                    'Notificações Ativadas'
-                                ) : (
-                                    'Ativar Notificações'
-                                )}
+                            {/* <SaveButton disabled={isSubmitDisabled} type="submit">Salvar</SaveButton> */}
+                            <NotificationButton onClick={handleNotification} backgroundColor={'green-500'}>
+                                {loadingNotification ?
+                                    <Loader size={20} biggestColor='gray' smallestColor='gray' /> :
+                                    "Ativar Notificações"    
+                                }
                             </NotificationButton>
-
-                            <NotificationButton
-                                type="button"
-                                onClick={handleDisableNotification}
-                                backgroundColor={'red-500'}
-                                disabled={loadingEnableNotification || loadingDisableNotification || !isPushEnabled}
-                            >
-                                {loadingDisableNotification ? (
-                                    <Loader size={20} biggestColor='gray' smallestColor='gray' />
-                                ) : (
-                                    'Desativar Notificações'
-                                )}
-                            </NotificationButton>
-
-                            {(permission === 'admin' || permission === 'superadmin') &&
+                            {( permission === 'admin' || permission === 'superadmin') &&
                                 <>
-                                    <NotificationButton
-                                        type="button"
-                                        onClick={handleConfig}
-                                        backgroundColor={'gray-400'}
-                                    >
-                                        Configurações
-                                    </NotificationButton>
-
-                                    <NotificationButton
-                                        type="button"
-                                        onClick={handleUsers}
-                                        backgroundColor={'gray-400'}
-                                    >
-                                        Usuários
-                                    </NotificationButton>
+                                    <NotificationButton onClick={handleConfig} backgroundColor={'gray-400'}>Configurações</NotificationButton>
+                                    <NotificationButton onClick={handleUsers} backgroundColor={'gray-400'}>Usuários</NotificationButton>
                                 </>
                             }
-
-                            <ChangePasswordButton type="button" onClick={changePassword}>
-                                Trocar de senha
-                            </ChangePasswordButton>
+                            <ChangePasswordButton onClick={changePassword}>Trocar de senha</ChangePasswordButton>
                         </ContainerButtons>
                     </FormContainer>
                 </>
