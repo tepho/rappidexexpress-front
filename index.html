@@ -19,19 +19,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Notificações OneSignal -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(function(OneSignal) {
-        OneSignal.init({
-          appId: "2e8b634a-16bc-42a4-98b2-4f3701acf59a",
-          safari_web_id: "web.onesignal.auto.3b8b9214-66ac-44d1-a7fb-a9dc856242cb",
-            notifyButton: {
-              enable: true,
-          },
-        })
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+  if (!isLocalhost) {
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    window.OneSignalDeferred.push(async function (OneSignal) {
+      await OneSignal.init({
+        appId: "1b86a0ea-8ac1-4e32-9fa5-12629ccd0c0b",
+        safari_web_id: "web.onesignal.auto.3b8b9214-66ac-44d1-a7fb-a9dc856242cb",
+        notifyButton: {
+          enable: false,
+        },
       });
-    </script>
+    });
+  } else {
+    console.log('OneSignal desativado no ambiente local.');
+  }
+</script>
 
     <!-- Script do VitePWA -->
     <!-- <script type="module" src="/path/to/vitepwa/register.js"></script> -->
